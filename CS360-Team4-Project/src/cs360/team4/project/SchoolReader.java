@@ -1,10 +1,7 @@
+package cs360.team4.project;
+
 import java.io.*;
 import java.util.*;
-
-
-/**
- * 
- */
 
 /**
  * @author Cooper
