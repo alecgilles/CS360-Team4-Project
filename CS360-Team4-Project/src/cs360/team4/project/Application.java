@@ -25,18 +25,26 @@ public class Application {
 		
 		allEvents = semistateReader.readFile("SemiStates.csv", allSchools, allEvents);
 		
-		for (int i = 0; i < allEvents.size(); i++){
-			if (allEvents.getByIndex(i) instanceof Sectional){
-				System.out.println(((Sectional) allEvents.getByIndex(i)).toString() + "\n");
-			}
-			else if (allEvents.getByIndex(i) instanceof Regional){
-				System.out.println(((Regional) allEvents.getByIndex(i)).toString() + "\n");
-			}
-			else if (allEvents.getByIndex(i) instanceof SemiState){
-				System.out.println(((SemiState) allEvents.getByIndex(i)).toString() + "\n");
-			}
-
+		EventTable sectionals = new EventTable();
+		sectionals = allEvents.getSectionals();
+		EventTable regionals = new EventTable();
+		regionals = allEvents.getRegionals();
+		EventTable semistates = new EventTable();
+		semistates = allEvents.getSemiStates();
+		
+		for (int i = 0; i < sectionals.size(); i++){
+			System.out.println(sectionals.getByIndex(i).toString());
 		}
+
+		for (int i = 0; i < regionals.size(); i++){
+			System.out.println(regionals.getByIndex(i).toString());
+		}
+
+		for (int i = 0; i < semistates.size(); i++){
+			System.out.println(semistates.getByIndex(i).toString());
+		}
+
+		//MainView mv = new MainView();
 		
 	}
 

@@ -9,6 +9,9 @@ package tables;
 import java.util.ArrayList;
 
 import events.Event;
+import events.Regional;
+import events.Sectional;
+import events.SemiState;
 
 public class EventTable {
 	
@@ -167,10 +170,55 @@ public class EventTable {
 	public int size(){
 		return data.size();
 	}
+	
+	
+	/**
+	 * Get all the sectional in a tournament.
+	 * @return a table of all events
+	 */
+	public EventTable getSectionals(){
+		EventTable sectionals = new EventTable();
+		for (int i = 0; i < data.size(); i++){
+			if (getByIndex(i) instanceof Sectional){
+				sectionals.add(getByIndex(i));
+			}
+		}
+		return sectionals;
+	}
 
 	
 	/**
-	 * Print method for testing
+	 * Get all the regionals in a tournament.
+	 * @return a table of all regionals
+	 */
+	public EventTable getRegionals(){
+		EventTable regionals = new EventTable();
+		for (int i = 0; i < data.size(); i++){
+			if (getByIndex(i) instanceof Regional){
+				regionals.add(getByIndex(i));
+			}
+		}
+		return regionals;
+	}
+
+	
+	/**
+	 * Get all the semi-states in a tournament.
+	 * @return a table of all semi-states
+	 */
+	public EventTable getSemiStates(){
+		EventTable semistates = new EventTable();
+		for (int i = 0; i < data.size(); i++){
+			if (getByIndex(i) instanceof SemiState){
+				semistates.add(getByIndex(i));
+			}
+		}
+		return semistates;
+	}
+
+	
+	/**
+	 * Print method for testing.
 	 */
 	public void print(){
 		System.out.println("Schools:");
