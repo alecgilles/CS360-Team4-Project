@@ -21,12 +21,12 @@ import javax.swing.JScrollPane;
 public class MainView implements Observer {
 	private final String[] EVENT_LEVELS = {"Semi-State Events", "Regional Events", "Sectional Events"};
 	private JFrame window;
-	private Tournament tournament;
+	//private Tournament tournament;
 	private ControlPanel controlPanel;
 	private TierViewPanel tierViewPanel;
 	
-	public MainView(Tournament tournament) {
-		this.tournament = tournament;
+	public MainView(Object tournament) {
+		//this.tournament = tournament;
 		window = new JFrame();
 		
 		controlPanel = new ControlPanel();
@@ -98,7 +98,7 @@ public class MainView implements Observer {
 		}
 		
 		public void update(int currentTier) {
-			String[] hostSchools = tournament.getHostSchools(currentTier);
+			String[] hostSchools = {""};//tournament.getHostSchools(currentTier);
 			
 			for(int i = 0; i < hostSchools.length; i++) {
 				JPanel tierEvent = new JPanel(new BorderLayout());
