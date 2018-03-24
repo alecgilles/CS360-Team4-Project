@@ -11,7 +11,7 @@ import tables.SchoolTable;
  * @author Cooper
  *
  */
-class SchoolReader {
+public class SchoolReader {
 	
 	/**
 	 * Read in schools from a file and add them to a list of schools in the tournament
@@ -30,7 +30,9 @@ class SchoolReader {
 			String name = null;
 			int id = -1;
 			
-
+			//Gobble up the header line
+			inputLine = br.readLine();
+			
 			while ((inputLine = br.readLine()) != null) {
 				token = new StringTokenizer(inputLine, ",");
 				name = token.nextToken();

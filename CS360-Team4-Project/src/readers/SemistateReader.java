@@ -13,7 +13,7 @@ import tables.SchoolTable;
  * @author Cooper
  *
  */
-class SemistateReader {
+public class SemistateReader {
 	
 	/**
 	 * Read in semi-states from a file and add them to a list of events
@@ -23,7 +23,6 @@ class SemistateReader {
 	 * @return allEvents updated to include semi-states
 	 */
 	public EventTable readFile(String fileIn, SchoolTable allSchools, EventTable allEvents) {
-		EventTable regionalsInSemistate = new EventTable();
 		String inputLine = null;
 		try {
 			FileReader fr = new FileReader(fileIn);
@@ -35,6 +34,9 @@ class SemistateReader {
 			School host = null;
 			int id = -1;
 			
+			//Gobble up the header line
+			inputLine = br.readLine();
+
 			while ((inputLine = br.readLine()) != null) {
 				token = new StringTokenizer(inputLine, ",");
 				t = token.nextToken();
@@ -43,7 +45,8 @@ class SemistateReader {
 				t = token.nextToken();
 				t = t.trim();
 				id = Integer.parseUnsignedInt(t);
-				regionalTokens = new StringTokenizer(token.nextToken());
+				regionalTokens = new StringTokenizer(token.nextToken(), " ");
+				EventTable regionalsInSemistate = new EventTable();
 				while(regionalTokens.hasMoreTokens()){
 					t = regionalTokens.nextToken();
 					t = t.trim();

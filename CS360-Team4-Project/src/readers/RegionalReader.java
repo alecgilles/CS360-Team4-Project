@@ -13,7 +13,7 @@ import tables.SchoolTable;
  * @author Cooper
  *
  */
-class RegionalReader {
+public class RegionalReader {
 	
 	/**
 	 * Read in regionals from a file and add them to a list of events
@@ -23,7 +23,6 @@ class RegionalReader {
 	 * @return allEvents updated to include regionals
 	 */
 	public EventTable readFile(String fileIn, SchoolTable allSchools, EventTable allEvents) {
-		EventTable sectionalsInRegional = new EventTable();
 		String inputLine = null;
 		try {
 			FileReader fr = new FileReader(fileIn);
@@ -35,6 +34,8 @@ class RegionalReader {
 			School host = null;
 			int id = -1;
 			
+			//Gobble up the header line
+			inputLine = br.readLine();
 
 			while ((inputLine = br.readLine()) != null) {
 				token = new StringTokenizer(inputLine, ",");
@@ -44,7 +45,8 @@ class RegionalReader {
 				t = token.nextToken();
 				t = t.trim();
 				id = Integer.parseUnsignedInt(t);
-				sectionalTokens = new StringTokenizer(token.nextToken());
+				sectionalTokens = new StringTokenizer(token.nextToken(), " ");
+				EventTable sectionalsInRegional = new EventTable();
 				while(sectionalTokens.hasMoreTokens()){
 					t = sectionalTokens.nextToken();
 					t = t.trim();

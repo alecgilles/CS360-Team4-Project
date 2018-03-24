@@ -33,4 +33,6 @@ abstract public class Event {
 		return host;
 	}
 	
+	abstract public String toString();
+	
 }

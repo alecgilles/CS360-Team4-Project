@@ -13,7 +13,7 @@ import tables.SchoolTable;
  * @author Cooper
  *
  */
-class SectionalReader {
+public class SectionalReader {
 	
 	/**
 	 * Read in sectionals from a file and add them to a list of events
@@ -23,7 +23,6 @@ class SectionalReader {
 	 * @return allEvents updated to include sectionals
 	 */
 	public EventTable readFile(String fileIn, SchoolTable allSchools, EventTable allEvents) {
-		SchoolTable schoolsInSectional = new SchoolTable();
 		String inputLine = null;
 		try {
 			FileReader fr = new FileReader(fileIn);
@@ -35,6 +34,8 @@ class SectionalReader {
 			School host = null;
 			int id = -1;
 			
+			//Gobble up the header line
+			inputLine = br.readLine();
 
 			while ((inputLine = br.readLine()) != null) {
 				token = new StringTokenizer(inputLine, ",");
@@ -44,7 +45,8 @@ class SectionalReader {
 				t = token.nextToken();
 				t = t.trim();
 				id = Integer.parseUnsignedInt(t);
-				schoolTokens = new StringTokenizer(token.nextToken());
+				schoolTokens = new StringTokenizer(token.nextToken(), " ");
+				SchoolTable schoolsInSectional = new SchoolTable();
 				while(schoolTokens.hasMoreTokens()){
 					t = schoolTokens.nextToken();
 					t = t.trim();

@@ -16,5 +16,28 @@ public class Sectional extends Event{
 		super(pId, pHost);
 		schools = pSchools;
 	}
-	
+
+	public SchoolTable getSchools(){
+		return schools;
+	}
+
+	@Override
+	public String toString() {
+		String retVal = "";
+		
+		retVal += host.getName() + "\nFeeder Schools: ";
+		
+		//Add all school names from the sectional to the list of feeder schools
+		for (int i = 0; i < schools.size(); i++){
+			if (i == schools.size() - 1){
+				retVal += schools.getByIndex(i).getName();
+			}
+			else{
+				retVal += schools.getByIndex(i).getName() + ", ";	
+			}
+		}
+		
+		return retVal;
+	}
+		
 }
