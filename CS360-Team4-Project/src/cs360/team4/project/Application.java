@@ -44,7 +44,7 @@ public class Application {
 			System.out.println(semistates.getByIndex(i).toString());
 		}
 
-		//MainView mv = new MainView();
+		MainView mv = new MainView(allEvents);
 		
 	}
 

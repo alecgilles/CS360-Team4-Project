@@ -2,8 +2,11 @@ package cs360.team4.project;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,16 +20,25 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.SpringLayout;
+
+import events.Event;
+import events.Regional;
+import events.Sectional;
+import events.SemiState;
+import tables.EventTable;
+import tables.SchoolTable;
 
 public class MainView implements Observer {
 	private final String[] EVENT_LEVELS = {"Semi-State Events", "Regional Events", "Sectional Events"};
 	private JFrame window;
-	//private Tournament tournament;
+	private EventTable allEvents;
 	private ControlPanel controlPanel;
 	private TierViewPanel tierViewPanel;
 	
-	public MainView(Object tournament) {
-		//this.tournament = tournament;
+	public MainView(EventTable allEvents) {
+		this.allEvents = allEvents;
 		window = new JFrame();
 		
 		controlPanel = new ControlPanel();
@@ -77,41 +89,89 @@ public class MainView implements Observer {
 	}
 	
 	private class TierViewPanel extends JPanel {
-		JPanel gridBagPanel;
-		GridBagConstraints constraints;
+		JPanel gridPanel;
 		
 		public TierViewPanel(int currentTier) {
 			this.setLayout(new BorderLayout());
-			gridBagPanel = new JPanel(new GridBagLayout());
-			
-			constraints = new GridBagConstraints();
-			constraints.ipadx = 10;
-			constraints.ipady = 5;
-			constraints.insets = new Insets(0, 0, 0, 0);
-			constraints.weightx = 1.0;
-			constraints.weighty = 0;
-			constraints.gridx = 0;
-			constraints.fill = GridBagConstraints.HORIZONTAL;
-			
-			this.add(gridBagPanel, BorderLayout.NORTH);
 			update(currentTier);
 		}
 		
 		public void update(int currentTier) {
-			String[] hostSchools = {""};//tournament.getHostSchools(currentTier);
+			this.removeAll();
+			EventTable hostSchools = null;
 			
-			for(int i = 0; i < hostSchools.length; i++) {
+			switch(currentTier) {
+				case 0:
+					hostSchools = allEvents.getSemiStates();
+					break;
+				case 1:
+					hostSchools = allEvents.getRegionals();
+					break;
+				case 2:
+					hostSchools = allEvents.getSectionals();
+			}
+			
+			gridPanel = new JPanel(new GridLayout(hostSchools.size(), 1));
+			
+			for(int i = 0; i < hostSchools.size(); i++) {
+				Event event = hostSchools.getByIndex(i);
+				
 				JPanel tierEvent = new JPanel(new BorderLayout());
 				tierEvent.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				
-				JButton tierHeader = new JButton(hostSchools[i]);
+				JButton tierHeader = new JButton(event.getHost().getName());
 				tierEvent.add(tierHeader, BorderLayout.NORTH);
 				
-				tierEvent.add(new JLabel("test"), BorderLayout.CENTER);
+				tierEvent.add(getSchoolListPane(event, currentTier), BorderLayout.CENTER);
 				
-				constraints.gridy = i;
-				gridBagPanel.add(tierEvent, constraints);
+				gridPanel.add(tierEvent);
 			}
+			
+			this.add(gridPanel, BorderLayout.NORTH);
+			this.repaint();
+			this.revalidate();
+		}
+		
+		private JTextArea getSchoolListPane(Event event, int currentTier) {
+			JTextArea textArea;
+			String schoolList = "";
+
+			if(currentTier == 0) {
+				EventTable regionals = ((SemiState) event).getRegionals();
+				for(int i = 0; i < regionals.size(); i++) {
+					EventTable sectionals = ((Regional) regionals.getByIndex(i)).getSectionals();
+					for(int j = 0; j < sectionals.size(); j++) {
+						SchoolTable schools = ((Sectional)sectionals.getByIndex(j)).getSchools();
+						for(int k = 0; k < schools.size(); k++) {
+							schoolList += schools.getByIndex(k).getName()+", ";
+						}
+					}
+				}
+			} else if(currentTier == 1) {
+				EventTable sectionals = ((Regional) event).getSectionals();
+				for(int i = 0; i < sectionals.size(); i++) {
+					SchoolTable schools = ((Sectional)sectionals.getByIndex(i)).getSchools();
+					for(int j = 0; j < schools.size(); j++) {
+						schoolList += schools.getByIndex(j).getName()+", ";
+					}
+				}
+			} else {
+				SchoolTable schools = ((Sectional) event).getSchools();
+				for(int j = 0; j < schools.size(); j++) {
+					schoolList += schools.getByIndex(j).getName()+", ";
+				}
+			}
+			
+			if(schoolList.length() > 0) {
+				schoolList = schoolList.substring(0, schoolList.length() - 2);
+			}
+			
+			textArea = new JTextArea(schoolList);
+			textArea.setLineWrap(true);
+			textArea.setWrapStyleWord(true);
+			textArea.setEditable(false);
+			
+			return textArea;
 		}
 	}
 	

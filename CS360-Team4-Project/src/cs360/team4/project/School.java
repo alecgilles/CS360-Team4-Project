@@ -5,8 +5,8 @@ package cs360.team4.project;
  *
  */
 public class School {
-	String name;
-	int id;
+	private String name;
+	private int id;
 	
 	// null constructor
 	public School(){
