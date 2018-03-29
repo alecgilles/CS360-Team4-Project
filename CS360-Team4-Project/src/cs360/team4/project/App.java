@@ -1,17 +1,24 @@
 package cs360.team4.project;
 
-import tables.*;
-
 import java.util.Observable;
 import java.util.Observer;
 
-import events.*;
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.stage.Stage;
-import readers.*;
+import readers.RegionalReader;
+import readers.SchoolReader;
+import readers.SectionalReader;
+import readers.SemistateReader;
+import tables.EventTable;
+import tables.SchoolTable;
 
 public class App extends Application implements Observer {
 	private final String APPLICATION_TITLE = "Tournament Workshop";
@@ -47,7 +54,7 @@ public class App extends Application implements Observer {
 		allEvents = regionalReader.readFile("resources/data/Regionals.csv", allSchools, allEvents);
 		
 		allEvents = semistateReader.readFile("resources/data/SemiStates.csv", allSchools, allEvents);
-		
+		/*
 		EventTable sectionals = new EventTable();
 		sectionals = allEvents.getSectionals();
 		EventTable regionals = new EventTable();
@@ -65,9 +72,12 @@ public class App extends Application implements Observer {
 
 		for (int i = 0; i < semistates.size(); i++){
 			System.out.println(semistates.getByIndex(i).toString());
-		}
+		}*/
 		
-		Parent root = FXMLLoader.load(getClass().getResource("/view/MainView.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"));
+		loader.setController(new MainController());
+		
+		Parent root = loader.load();
 		Scene scene = new Scene(root);
 		
 		primaryStage.setTitle(APPLICATION_TITLE);
@@ -76,4 +86,27 @@ public class App extends Application implements Observer {
 		primaryStage.show();
 	}
 
+	public class MainController {
+		
+		@FXML
+		private ComboBox<String> levelSelectCombo;
+		
+		@FXML
+		private ListView tierEventList;
+		
+		public void initialize() {
+			levelSelectCombo.getItems().setAll(EVENT_LEVELS);
+			levelSelectCombo.getSelectionModel().select(0);
+		}
+		
+		@FXML
+		protected void onCloseButton(ActionEvent event) {
+			Platform.exit();
+		}
+		
+		@FXML
+		protected void onLevelSelect(ActionEvent event) {
+			// TODO: Make this update the tournament list view
+		}
+	}
 }
