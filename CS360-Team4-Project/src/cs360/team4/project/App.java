@@ -1,8 +1,17 @@
 package cs360.team4.project;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+import events.Event;
+import events.Regional;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -11,7 +20,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import readers.RegionalReader;
 import readers.SchoolReader;
@@ -25,6 +37,7 @@ public class App extends Application implements Observer {
 	private final String[] EVENT_LEVELS = {"Semi-State Events", "Regional Events", "Sectional Events"};
 	private SchoolTable allSchools;
 	private EventTable allEvents;
+	private MainController controller;
 
 	public static void main(String[] args) {
 		launch();
@@ -72,10 +85,11 @@ public class App extends Application implements Observer {
 
 		for (int i = 0; i < semistates.size(); i++){
 			System.out.println(semistates.getByIndex(i).toString());
-		}*/
-		
+		}
+		*/
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"));
-		loader.setController(new MainController());
+		controller = new MainController();
+		loader.setController(controller);
 		
 		Parent root = loader.load();
 		Scene scene = new Scene(root);
@@ -92,11 +106,14 @@ public class App extends Application implements Observer {
 		private ComboBox<String> levelSelectCombo;
 		
 		@FXML
-		private ListView tierEventList;
+		private ListView<Event> tierEventList;
 		
 		public void initialize() {
 			levelSelectCombo.getItems().setAll(EVENT_LEVELS);
 			levelSelectCombo.getSelectionModel().select(0);
+			onLevelSelect(null);
+			
+			tierEventList.setCellFactory(lv -> new EventCell(tierEventList));
 		}
 		
 		@FXML
@@ -105,8 +122,26 @@ public class App extends Application implements Observer {
 		}
 		
 		@FXML
-		protected void onLevelSelect(ActionEvent event) {
-			// TODO: Make this update the tournament list view
+		protected void onLevelSelect(ActionEvent e) {
+			EventTable hostSchools = null;
+			int currentTier = levelSelectCombo.getSelectionModel().getSelectedIndex();
+
+			tierEventList.getItems().clear();
+			
+			switch(currentTier) {
+				case 0:
+					hostSchools = allEvents.getSemiStates();
+					break;
+				case 1:
+					hostSchools = allEvents.getRegionals();
+					break;
+				case 2:
+					hostSchools = allEvents.getSectionals();
+			}
+			
+			for(int i = 0; i < hostSchools.size(); i++) {
+				tierEventList.getItems().add(hostSchools.getByIndex(i));
+			}
 		}
 	}
 }

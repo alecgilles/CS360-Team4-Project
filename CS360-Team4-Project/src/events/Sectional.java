@@ -1,43 +1,35 @@
 package events;
 
+import java.util.ArrayList;
+
 import cs360.team4.project.School;
 import tables.SchoolTable;
 
-public class Sectional extends Event{
-	
+public class Sectional extends Event {
+
 	protected SchoolTable schools;
-	
-	public Sectional(){
+
+	public Sectional() {
 		super();
 		schools = null;
 	}
-	
-	public Sectional(int pId, School pHost, SchoolTable pSchools){
+
+	public Sectional(int pId, School pHost, SchoolTable pSchools) {
 		super(pId, pHost);
 		schools = pSchools;
 	}
 
-	public SchoolTable getSchools(){
+	public SchoolTable getSchools() {
 		return schools;
 	}
 
-	@Override
-	public String toString() {
-		String retVal = "";
-		
-		retVal += host.getName() + "\nFeeder Schools: ";
-		
-		//Add all school names from the sectional to the list of feeder schools
-		for (int i = 0; i < schools.size(); i++){
-			if (i == schools.size() - 1){
-				retVal += schools.getByIndex(i).getName();
-			}
-			else{
-				retVal += schools.getByIndex(i).getName() + ", ";	
-			}
+	public ArrayList<School> getAttendingSchools() {
+		ArrayList<School> schoolList = new ArrayList<>();
+
+		for (int i = 0; i < schools.size(); i++) {
+			schoolList.add(schools.getByIndex(i));
 		}
-		
-		return retVal;
+
+		return schoolList;
 	}
-		
 }
