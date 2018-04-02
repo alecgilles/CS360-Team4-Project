@@ -25,10 +25,7 @@ public class Sectional extends Event {
 
 	public ArrayList<School> getAttendingSchools() {
 		ArrayList<School> schoolList = new ArrayList<>();
-
-		for (int i = 0; i < schools.size(); i++) {
-			schoolList.add(schools.getByIndex(i));
-		}
+		schoolList.addAll(schools.getData().values());
 
 		return schoolList;
 	}

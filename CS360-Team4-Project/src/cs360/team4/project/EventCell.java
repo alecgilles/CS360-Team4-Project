@@ -7,18 +7,21 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
 import javafx.scene.text.Text;
 
 public class EventCell extends ListCell<Event> {
-	private final EventCellController eventCellController = new EventCellController();
-	private final Parent cellRoot = eventCellController.getRoot();
+	private final EventCellController eventCellController;
+	private final Parent cellRoot;
 	
 	public EventCell(ListView<Event> listView) {
-		this.prefWidthProperty().bind(listView.widthProperty());
-		setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+		 eventCellController = new EventCellController(listView);
+		 cellRoot = eventCellController.getRoot();
+		
+		 this.prefWidthProperty().bind(listView.widthProperty());
+		 setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
 	}
 	
 	@Override
@@ -37,11 +40,11 @@ public class EventCell extends ListCell<Event> {
 		private Text hostSchoolName;
 		
 		@FXML
-		private TextArea attendingSchools;
+		private Label attendingSchools;
 		
 		private Parent root;
 		
-		public EventCellController() {
+		public EventCellController(ListView<Event> listView) {
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/EventCellView.fxml"));
 				loader.setController(this);
@@ -49,6 +52,8 @@ public class EventCell extends ListCell<Event> {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
+			attendingSchools.prefWidthProperty().bind(listView.widthProperty().subtract(35));
 		}
 		
 		public Parent getRoot() {
@@ -57,7 +62,7 @@ public class EventCell extends ListCell<Event> {
 		
 		public void setEvent(Event event) {
 			hostSchoolName.setText(event.getHost().getName());
-			attendingSchools.setText(event.getAttendingSchoolsAsString()); 
+			attendingSchools.setText(event.getAttendingSchoolsAsString());
 		}
 	}
 }

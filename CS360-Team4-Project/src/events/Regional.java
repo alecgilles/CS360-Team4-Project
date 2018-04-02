@@ -26,10 +26,9 @@ public class Regional extends Event {
 	public ArrayList<School> getAttendingSchools() {
 		ArrayList<School> schoolList = new ArrayList<>();
 
-		for (int i = 0; i < sectionals.size(); i++) {
-			Sectional currSectional = (Sectional) sectionals.getByIndex(i);
-			schoolList.addAll(currSectional.getAttendingSchools());
-		}
+		sectionals.getData().forEach((k, v) -> {
+			schoolList.addAll(v.getAttendingSchools());
+		});
 
 		return schoolList;
 	}

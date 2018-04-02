@@ -26,10 +26,9 @@ public class SemiState extends Event {
 	public ArrayList<School> getAttendingSchools() {
 		ArrayList<School> schoolList = new ArrayList<>();
 
-		for (int i = 0; i < regionals.size(); i++) {
-			Regional currRegional = (Regional) regionals.getByIndex(i);
-			schoolList.addAll(currRegional.getAttendingSchools());
-		}
+		regionals.getData().forEach((k, v) -> {
+			schoolList.addAll(v.getAttendingSchools());
+		});
 
 		return schoolList;
 	}
