@@ -1,8 +1,7 @@
 package events;
 
+import application.School;
 import java.util.ArrayList;
-
-import cs360.team4.project.School;
 import tables.EventTable;
 
 public class SemiState extends Event {
@@ -14,9 +13,9 @@ public class SemiState extends Event {
 		regionals = null;
 	}
 
-	public SemiState(int pId, School pHost, EventTable pRegionals) {
-		super(pId, pHost);
-		regionals = pRegionals;
+	public SemiState(int id, School host, EventTable regionals) {
+		super(id, host);
+		this.regionals = regionals;
 	}
 
 	public EventTable getRegionals() {

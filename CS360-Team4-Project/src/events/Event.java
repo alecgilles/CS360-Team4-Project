@@ -1,10 +1,9 @@
 package events;
 
+import application.School;
 import java.util.ArrayList;
 
-import cs360.team4.project.School;
-
-abstract public class Event {
+public abstract class Event {
 
 	protected int id;
 	protected School host;
@@ -14,28 +13,28 @@ abstract public class Event {
 		host = null;
 	}
 
-	public Event(int pId, School pHost) {
-		id = pId;
-		host = pHost;
+	public Event(int id, School host) {
+		this.id = id;
+		this.host = host;
 	}
 
-	public void setId(int pId) {
-		id = pId;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getId() {
 		return id;
 	}
 
-	public void setHost(School pHost) {
-		host = pHost;
+	public void setHost(School host) {
+		this.host = host;
 	}
 
 	public School getHost() {
 		return host;
 	}
 
-	abstract public ArrayList<School> getAttendingSchools();
+	public abstract ArrayList<School> getAttendingSchools();
 
 	@Override
 	public String toString() {

@@ -1,11 +1,10 @@
 package tables;
 
-import java.util.HashMap;
-
 import events.Event;
 import events.Regional;
 import events.Sectional;
 import events.SemiState;
+import java.util.HashMap;
 
 public class EventTable {
 

@@ -1,9 +1,10 @@
-package cs360.team4.project;
+package application;
+
+import events.Event;
 
 import java.util.Observable;
 import java.util.Observer;
 
-import events.Event;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -24,10 +25,10 @@ import tables.EventTable;
 import tables.SchoolTable;
 
 public class App extends Application implements Observer {
-	private final String APPLICATION_TITLE = "Tournament Workshop";
-	private final double MINIMUM_WIDTH = 800.0;
-	private final double MINIMUM_HEIGHT = 600.0;
-	private final String[] EVENT_LEVELS = { "Semi-State Events", "Regional Events", "Sectional Events" };
+	private static final String APPLICATION_TITLE = "Tournament Workshop";
+	private static final double MINIMUM_WIDTH = 800.0;
+	private static final double MINIMUM_HEIGHT = 600.0;
+	private static final String[] EVENT_LEVELS = { "Semi-State Events", "Regional Events", "Sectional Events" };
 	private SchoolTable allSchools;
 	private EventTable allEvents;
 	private MainController controller;
@@ -133,6 +134,9 @@ public class App extends Application implements Observer {
 				break;
 			case 2:
 				hostSchools = allEvents.getSectionals();
+				break;
+			default:
+				hostSchools = null;
 			}
 
 			tierEventList.getItems().addAll(hostSchools.getData().values());

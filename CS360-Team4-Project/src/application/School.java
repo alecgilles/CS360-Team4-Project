@@ -1,4 +1,4 @@
-package cs360.team4.project;
+package application;
 
 /**
  * @author Cooper
@@ -15,9 +15,9 @@ public class School {
 	}
 	
 	// parameter constructor
-	public School (String tName, int tId){
-		this.name = tName;
-		this.id = tId;	
+	public School (String name, int id){
+		this.name = name;
+		this.id = id;	
 		
 	}
 	

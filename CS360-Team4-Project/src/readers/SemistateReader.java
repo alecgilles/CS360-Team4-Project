@@ -1,12 +1,11 @@
 package readers;
 
+import application.School;
+import events.SemiState;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.StringTokenizer;
-
-import cs360.team4.project.School;
-import events.SemiState;
 import tables.EventTable;
 import tables.SchoolTable;
 

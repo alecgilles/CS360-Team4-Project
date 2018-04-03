@@ -1,8 +1,7 @@
 package events;
 
+import application.School;
 import java.util.ArrayList;
-
-import cs360.team4.project.School;
 import tables.SchoolTable;
 
 public class Sectional extends Event {
@@ -14,9 +13,9 @@ public class Sectional extends Event {
 		schools = null;
 	}
 
-	public Sectional(int pId, School pHost, SchoolTable pSchools) {
-		super(pId, pHost);
-		schools = pSchools;
+	public Sectional(int id, School host, SchoolTable schools) {
+		super(id, host);
+		this.schools = schools;
 	}
 
 	public SchoolTable getSchools() {

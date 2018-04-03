@@ -1,8 +1,7 @@
-package cs360.team4.project;
-
-import java.io.IOException;
+package application;
 
 import events.Event;
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

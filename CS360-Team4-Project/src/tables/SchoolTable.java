@@ -1,8 +1,7 @@
 package tables;
 
+import application.School;
 import java.util.HashMap;
-
-import cs360.team4.project.School;
 
 public class SchoolTable {
 

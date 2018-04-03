@@ -1,8 +1,7 @@
 package events;
 
+import application.School;
 import java.util.ArrayList;
-
-import cs360.team4.project.School;
 import tables.EventTable;
 
 public class Regional extends Event {
@@ -14,9 +13,9 @@ public class Regional extends Event {
 		sectionals = null;
 	}
 
-	public Regional(int pId, School pHost, EventTable pSectionals) {
-		super(pId, pHost);
-		sectionals = pSectionals;
+	public Regional(int id, School host, EventTable sectionals) {
+		super(id, host);
+		this.sectionals = sectionals;
 	}
 
 	public EventTable getSectionals() {
