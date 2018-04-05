@@ -1,10 +1,17 @@
 package application;
 
+import com.lynden.gmapsfx.GoogleMapView;
+import com.lynden.gmapsfx.MapComponentInitializedListener;
+import com.lynden.gmapsfx.javascript.event.UIEventType;
+import com.lynden.gmapsfx.javascript.object.GoogleMap;
+import com.lynden.gmapsfx.javascript.object.LatLong;
+import com.lynden.gmapsfx.javascript.object.MapOptions;
+import com.lynden.gmapsfx.javascript.object.MapTypeIdEnum;
+import com.lynden.gmapsfx.javascript.object.Marker;
+import com.lynden.gmapsfx.javascript.object.MarkerOptions;
 import events.Event;
-
 import java.util.Observable;
 import java.util.Observer;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -97,20 +104,42 @@ public class App extends Application implements Observer {
 		primaryStage.show();
 	}
 
-	public class MainController {
+	public class MainController implements MapComponentInitializedListener {
 
 		@FXML
 		private ComboBox<String> levelSelectCombo;
 
 		@FXML
 		private ListView<Event> tierEventList;
+		
+		@FXML
+		private GoogleMapView mapView;
+		
+		private GoogleMap map;
 
 		public void initialize() {
 			levelSelectCombo.getItems().setAll(EVENT_LEVELS);
 			levelSelectCombo.getSelectionModel().select(0);
-			onLevelSelect(null);
 
 			tierEventList.setCellFactory(lv -> new EventCell(lv));
+			
+			mapView.addMapInializedListener(this);
+		}
+		
+		@Override
+		public void mapInitialized() {
+			MapOptions mapOptions = new MapOptions();
+
+			mapOptions.center(new LatLong(39.774, -86.155))
+            .mapType(MapTypeIdEnum.ROADMAP)
+            .streetViewControl(false)
+            .zoom(8);
+			
+			map = mapView.createMap(mapOptions);
+			
+			// levelSelectCombo is disabled by default to prevent user interaction before the map is initialized.
+			levelSelectCombo.setDisable(false);
+			onLevelSelect(null);
 		}
 
 		@FXML
@@ -122,8 +151,6 @@ public class App extends Application implements Observer {
 		protected void onLevelSelect(ActionEvent e) {
 			EventTable hostSchools = null;
 			int currentTier = levelSelectCombo.getSelectionModel().getSelectedIndex();
-
-			tierEventList.getItems().clear();
 
 			switch (currentTier) {
 			case 0:
@@ -139,7 +166,19 @@ public class App extends Application implements Observer {
 				hostSchools = null;
 			}
 
+			tierEventList.getItems().clear();
 			tierEventList.getItems().addAll(hostSchools.getData().values());
+			
+			/*
+			MarkerOptions markerOptions = new MarkerOptions();
+			
+			markerOptions.position(new LatLong(39.774, -86.155));
+			Marker testMarker = new Marker(markerOptions);
+			map.addUIEventHandler(testMarker, UIEventType.click, (marker) -> {
+				System.out.println(marker);
+			});
+			map.addMarker(testMarker);
+			*/
 		}
 	}
 }
