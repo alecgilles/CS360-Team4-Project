@@ -2,8 +2,9 @@ package tables;
 
 import application.School;
 import java.util.HashMap;
+import java.util.Observable;
 
-public class SchoolTable {
+public class SchoolTable extends Observable {
 
 	private HashMap<Integer, School> data;
 
@@ -17,10 +18,8 @@ public class SchoolTable {
 	/**
 	 * Add a School to the ArrayList
 	 * 
-	 * @param element
-	 *            A School to be added.
-	 * @return false if element's site_Number has already been used, true if element
-	 *         was added.
+	 * @param element A School to be added.
+	 * @return false if element's id has already been used, true if element was added.
 	 */
 	public boolean add(School element) {
 		// add a site to the table
@@ -31,6 +30,8 @@ public class SchoolTable {
 		}
 		// add data
 		data.put(key, element);
+		setChanged();
+		notifyObservers();
 		return true;
 	}
 
@@ -57,11 +58,13 @@ public class SchoolTable {
 	/**
 	 * 
 	 * @param key
-	 *            the Site_Number of the School to be removed
+	 *            the id of the School to be removed
 	 * @return the School removed
 	 */
 	public School remove(int key) {
 		// remove an a site from the table
+		setChanged();
+		notifyObservers();
 		return data.remove(key);
 	}
 
@@ -78,6 +81,8 @@ public class SchoolTable {
 		if (data.containsKey(element.getId())) {
 			School answer = data.remove(element.getId());
 			data.put(element.getId(), element);
+			setChanged();
+			notifyObservers();
 			return answer;
 		} else {
 			return null;

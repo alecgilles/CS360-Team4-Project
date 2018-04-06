@@ -5,8 +5,9 @@ import events.Regional;
 import events.Sectional;
 import events.SemiState;
 import java.util.HashMap;
+import java.util.Observable;
 
-public class EventTable {
+public class EventTable extends Observable{
 
 	private HashMap<Integer, Event> data;
 
@@ -31,6 +32,8 @@ public class EventTable {
 		}
 		// add data
 		data.put(key, element);
+		setChanged();
+		notifyObservers();
 		return true;
 	}
 
@@ -62,6 +65,8 @@ public class EventTable {
 	 */
 	public Event remove(int key) {
 		// remove an a site from the table
+		setChanged();
+		notifyObservers();
 		return data.remove(key);
 	}
 
@@ -77,6 +82,8 @@ public class EventTable {
 		if (data.containsKey(element.getId())) {
 			Event answer = data.remove(element.getId());
 			data.put(element.getId(), element);
+			setChanged();
+			notifyObservers();
 			return answer;
 		} else {
 			return null;

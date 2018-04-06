@@ -17,8 +17,10 @@ public class SchoolReader {
 	 * Read in schools from a file and add them to a list of schools in the
 	 * tournament
 	 * 
-	 * @param fileIn filename of the file containing the sectionals
-	 * @param allSchool SchoolTable containing all schools in the tournament
+	 * @param fileIn
+	 *            filename of the file containing the sectionals
+	 * @param allSchool
+	 *            SchoolTable containing all schools in the tournament
 	 * @return allSchools updated to include all schools in the tournament
 	 */
 	public SchoolTable readFile(String fileIn, SchoolTable allSchools) {
@@ -30,6 +32,9 @@ public class SchoolReader {
 			StringTokenizer token;
 			String t = null;
 			String name = null;
+			String address = null;
+			double lat = -1;
+			double lon = -1;
 			int id = -1;
 
 			// Gobble up the header line
@@ -41,8 +46,15 @@ public class SchoolReader {
 				t = token.nextToken();
 				t = t.trim();
 				id = Integer.parseUnsignedInt(t);
+				address = token.nextToken() + ", " + token.nextToken() + ", " + token.nextToken() + token.nextToken();
+				t = token.nextToken();
+				t = t.trim();
+				lat = Double.parseDouble(t);
+				t = token.nextToken();
+				t = t.trim();
+				lon = Double.parseDouble(t);
 
-				allSchools.add(new School(name, id));
+				allSchools.add(new School(name, id, address, lat, lon));
 
 			}
 			fr.close();
