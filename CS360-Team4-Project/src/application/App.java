@@ -76,6 +76,9 @@ public class App extends Application {
 		controller = new MainController();
 		loader.setController(controller);
 		tournament.addObserver(controller);
+		allEvents.addObserver(controller);
+		allSchools.addObserver(controller);
+		driveTimes.addObserver(controller);
 
 		Parent root = loader.load();
 		Scene scene = new Scene(root);
