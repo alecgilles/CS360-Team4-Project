@@ -39,8 +39,7 @@ public class Tournament extends Observable {
 	}
 
 	/**
-	 * @param events
-	 *            the events to set
+	 * @param events the events to set
 	 */
 	public void setEvents(EventTable events) {
 		setChanged();
