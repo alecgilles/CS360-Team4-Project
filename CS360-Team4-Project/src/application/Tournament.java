@@ -4,16 +4,20 @@ import java.util.Observable;
 
 import tables.EventTable;
 import tables.SchoolTable;
+import tables.TimeTable;
 
 public class Tournament extends Observable {
 
 	private static Tournament tournament = new Tournament();
 	private EventTable events;
 	private SchoolTable schools;
+	private TimeTable driveTimes;
 
 	private Tournament() {
 		setEvents(new EventTable());
 		setSchools(new SchoolTable());
+		setDriveTimes(new TimeTable());
+		
 	}
 
 	/**
@@ -61,6 +65,20 @@ public class Tournament extends Observable {
 		setChanged();
 		notifyObservers();
 		this.schools = schools;
+	}
+
+	/**
+	 * @return the driveTimes
+	 */
+	public TimeTable getDriveTimes() {
+		return driveTimes;
+	}
+
+	/**
+	 * @param driveTimes the driveTimes to set
+	 */
+	public void setDriveTimes(TimeTable driveTimes) {
+		this.driveTimes = driveTimes;
 	}
 
 }
