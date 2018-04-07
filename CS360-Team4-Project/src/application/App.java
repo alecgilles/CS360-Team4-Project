@@ -23,6 +23,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import readers.RegionalReader;
@@ -108,6 +109,12 @@ public class App extends Application {
 		@FXML
 		private GoogleMapView mapView;
 
+		@FXML
+		private Text AvgTime;
+
+		@FXML
+		private Text MaxTime;
+
 		private GoogleMap map;
 		private ArrayList<Marker> mapMarkers;
 
@@ -181,6 +188,8 @@ public class App extends Application {
 		
 		private void onEventClick(Event event) {
 			System.out.println(event);
+			AvgTime.textProperty().set(tournament.getDriveTimes().calculateAverageDriveTime(event));
+			MaxTime.textProperty().set(tournament.getDriveTimes().calculateMaxDriveTime(event));			
 		}
 
 		@FXML
