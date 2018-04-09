@@ -2,6 +2,7 @@ package application;
 
 import com.lynden.gmapsfx.javascript.object.Marker;
 import com.lynden.gmapsfx.javascript.object.MarkerOptions;
+import com.lynden.gmapsfx.util.MarkerImageFactory;
 
 public class EventMarker extends Marker {
 	private int eventId;
@@ -9,8 +10,7 @@ public class EventMarker extends Marker {
 	public EventMarker(int eventId, MarkerOptions markerOptions) {
 		super(markerOptions);
 		
-		markerOptions.icon("https://cdn4.iconfinder.com/data/icons/building-1/512/build2-512.png");
-		//System.out.println(getClass().getResource("/view/img/event.png").());
+		markerOptions.icon(MarkerImageFactory.createMarkerImage("/view/img/school_icon_red.png", "png").replace("(", "").replace(")", ""));
 		this.setOptions(markerOptions);
 		this.eventId = eventId;
 	}

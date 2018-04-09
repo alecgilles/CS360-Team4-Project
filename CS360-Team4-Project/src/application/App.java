@@ -9,6 +9,7 @@ import com.lynden.gmapsfx.javascript.object.MapOptions;
 import com.lynden.gmapsfx.javascript.object.MapTypeIdEnum;
 import com.lynden.gmapsfx.javascript.object.Marker;
 import com.lynden.gmapsfx.javascript.object.MarkerOptions;
+import com.lynden.gmapsfx.util.MarkerImageFactory;
 import events.Event;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -116,6 +117,7 @@ public class App extends Application {
 		private Text maxTime;
 
 		private GoogleMap map;
+		private Marker selectedMarker;
 		private ArrayList<Marker> mapMarkers;
 
 		public void initialize() {
@@ -175,7 +177,7 @@ public class App extends Application {
 				EventMarker marker = new EventMarker(event.getId(), markerOptions);
 				map.addMarker(marker);
 				map.addUIEventHandler(marker, UIEventType.click, (m) -> {
-					onEventClick(tournament.getEvents().getByKey(marker.getEventId()));
+					onEventClick(marker);
 				});
 				mapMarkers.add(marker);
 			});
@@ -186,10 +188,20 @@ public class App extends Application {
 			mapMarkers.clear();
 		}
 		
-		private void onEventClick(Event event) {
+		private void onEventClick(EventMarker marker) {
+			if(selectedMarker != null) {
+				selectedMarker.getJSObject().call("setIcon", MarkerImageFactory.createMarkerImage("/view/img/school_icon_red.png", "png").replace("(", "").replace(")", ""));
+			}
+			
+			onEventSelected(tournament.getEvents().getByKey(marker.getEventId()));
+			marker.getJSObject().call("setIcon", MarkerImageFactory.createMarkerImage("/view/img/school_icon_blue.png", "png").replace("(", "").replace(")", ""));
+			selectedMarker = marker;
+		}
+		
+		private void onEventSelected(Event event) {
 			System.out.println(event);
 			avgTime.textProperty().set(tournament.getDriveTimes().calculateAverageDriveTime(event));
-			maxTime.textProperty().set(tournament.getDriveTimes().calculateMaxDriveTime(event));			
+			maxTime.textProperty().set(tournament.getDriveTimes().calculateMaxDriveTime(event));
 		}
 
 		@FXML
