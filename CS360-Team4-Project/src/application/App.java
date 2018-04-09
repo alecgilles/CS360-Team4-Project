@@ -110,10 +110,10 @@ public class App extends Application {
 		private GoogleMapView mapView;
 
 		@FXML
-		private Text AvgTime;
+		private Text avgTime;
 
 		@FXML
-		private Text MaxTime;
+		private Text maxTime;
 
 		private GoogleMap map;
 		private ArrayList<Marker> mapMarkers;
@@ -188,8 +188,8 @@ public class App extends Application {
 		
 		private void onEventClick(Event event) {
 			System.out.println(event);
-			AvgTime.textProperty().set(tournament.getDriveTimes().calculateAverageDriveTime(event));
-			MaxTime.textProperty().set(tournament.getDriveTimes().calculateMaxDriveTime(event));			
+			avgTime.textProperty().set(tournament.getDriveTimes().calculateAverageDriveTime(event));
+			maxTime.textProperty().set(tournament.getDriveTimes().calculateMaxDriveTime(event));			
 		}
 
 		@FXML

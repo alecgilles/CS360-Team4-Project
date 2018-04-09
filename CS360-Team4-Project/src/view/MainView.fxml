@@ -47,8 +47,8 @@
                <children>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Average Travel Time:" GridPane.halignment="RIGHT" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Maximum Travel Time:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                  <Text fx:id="AvgTime" strokeType="OUTSIDE" strokeWidth="0.0" text="0 mins" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                  <Text fx:id="MaxTime" strokeType="OUTSIDE" strokeWidth="0.0" text="0 mins" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                  <Text fx:id="avgTime" strokeType="OUTSIDE" strokeWidth="0.0" text="0 mins" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                  <Text fx:id="maxTime" strokeType="OUTSIDE" strokeWidth="0.0" text="0 mins" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </items>
