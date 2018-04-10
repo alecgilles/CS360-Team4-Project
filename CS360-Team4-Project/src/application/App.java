@@ -11,6 +11,8 @@ import com.lynden.gmapsfx.javascript.object.Marker;
 import com.lynden.gmapsfx.javascript.object.MarkerOptions;
 import com.lynden.gmapsfx.util.MarkerImageFactory;
 import events.Event;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
@@ -37,6 +39,7 @@ import readers.TimeTableReader;
 import tables.EventTable;
 import tables.SchoolTable;
 import tables.TimeTable;
+import writers.TournamentWriter;
 
 public class App extends Application {
 	private static final String APPLICATION_TITLE = "Tournament Workshop";
@@ -246,6 +249,13 @@ public class App extends Application {
 
 		@FXML
 		protected void onCloseButton(ActionEvent event) {
+			TournamentWriter tw = new TournamentWriter();
+			try {
+				tw.tournamentWrite(tournament, "Test Tournament");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			Platform.exit();
 		}
 
