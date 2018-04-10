@@ -9,8 +9,12 @@ import com.lynden.gmapsfx.javascript.object.MapOptions;
 import com.lynden.gmapsfx.javascript.object.MapTypeIdEnum;
 import com.lynden.gmapsfx.javascript.object.Marker;
 import com.lynden.gmapsfx.javascript.object.MarkerOptions;
+import com.lynden.gmapsfx.util.MarkerImageFactory;
 import events.Event;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 import javafx.application.Application;
@@ -22,10 +26,13 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import netscape.javascript.JSObject;
 import readers.RegionalReader;
 import readers.SchoolReader;
 import readers.SectionalReader;
@@ -34,6 +41,7 @@ import readers.TimeTableReader;
 import tables.EventTable;
 import tables.SchoolTable;
 import tables.TimeTable;
+import writers.TournamentWriter;
 
 public class App extends Application {
 	private static final String APPLICATION_TITLE = "Tournament Workshop";
@@ -51,7 +59,7 @@ public class App extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		tournament = Tournament.getTournament();
-		
+
 		SchoolTable allSchools = new SchoolTable();
 		EventTable allEvents = new EventTable();
 		TimeTable driveTimes = new TimeTable();
@@ -69,7 +77,7 @@ public class App extends Application {
 		allEvents = regionalReader.readFile("resources/data/Regionals.csv", allSchools, allEvents);
 		allEvents = semistateReader.readFile("resources/data/SemiStates.csv", allSchools, allEvents);
 		tournament.setEvents(allEvents);
-		
+
 		driveTimes = timeTableReader.readFile("resources/data/DriveTimesTable.csv", driveTimes);
 		tournament.setDriveTimes(driveTimes);
 
@@ -110,13 +118,21 @@ public class App extends Application {
 		private GoogleMapView mapView;
 
 		@FXML
-		private Text AvgTime;
+		private Text avgTime;
 
 		@FXML
-		private Text MaxTime;
+		private Text maxTime;
+
+		@FXML
+		private Label eventHostName;
+
+		@FXML
+		private GridPane eventInfoPane;
 
 		private GoogleMap map;
-		private ArrayList<Marker> mapMarkers;
+		private Marker selectedMarker;
+		private HashMap<Integer, Marker> eventMarkers;
+		private ArrayList<Marker> schoolMarkers;
 
 		public void initialize() {
 			levelSelectCombo.getItems().setAll(EVENT_LEVELS);
@@ -131,18 +147,36 @@ public class App extends Application {
 		public void mapInitialized() {
 			MapOptions mapOptions = new MapOptions();
 
-			mapOptions.center(new LatLong(39.774, -86.155)).mapType(MapTypeIdEnum.ROADMAP).streetViewControl(false)
-					.zoom(7);
+			mapOptions.center(new LatLong(39.874, -86.155)).mapType(MapTypeIdEnum.ROADMAP).streetViewControl(false)
+					.zoom(8);
+			mapOptions.getJSObject().setMember("fullscreenControl", false);
+
+			try {
+				mapView.getWebview().getEngine().executeScript(
+						"var mapStyles = [{featureType: \"poi\", elementType: \"labels\", stylers: [{ visibility: \"off\" }]}, {featureType: \"transit\", elementType: \"labels\", stylers: [{ visibility: \"off\" }]}];");
+				JSObject mapStyles = (JSObject) mapView.getWebview().getEngine().executeScript("mapStyles");
+				mapOptions.getJSObject().setMember("styles", mapStyles);
+			} catch (Exception e) {
+				// Exception here is possible but will only result in Points of Interest being
+				// shown, which is hardly fatal
+			}
 
 			map = mapView.createMap(mapOptions);
-			mapMarkers = new ArrayList<>();
+			eventMarkers = new HashMap<>();
+			schoolMarkers = new ArrayList<>();
+
+			tierEventList.getSelectionModel().selectedItemProperty().addListener((event, oldVal, newVal) -> {
+				if (newVal != null) {
+					onEventClick((EventMarker) eventMarkers.get(newVal.getId()));
+				}
+			});
 
 			// levelSelectCombo is disabled by default to prevent user interaction before
 			// the map is initialized.
 			levelSelectCombo.setDisable(false);
 			onLevelSelect(null);
 		}
-		
+
 		@Override
 		public void update(Observable object, Object arg) {
 			EventTable events = null;
@@ -165,35 +199,83 @@ public class App extends Application {
 			tierEventList.getItems().clear();
 			tierEventList.getItems().addAll(events.getData().values());
 
+			eventInfoPane.setVisible(false);
+
 			MarkerOptions markerOptions = new MarkerOptions();
-			
-			removeMapMarkers();
+
+			removeSchoolMarkers();
+			removeEventMarkers();
 			events.getData().forEach((id, event) -> {
 				School host = event.getHost();
 				markerOptions.position(new LatLong(host.getLat(), host.getLon()));
-				
+				markerOptions.title(host.getName());
+
 				EventMarker marker = new EventMarker(event.getId(), markerOptions);
 				map.addMarker(marker);
 				map.addUIEventHandler(marker, UIEventType.click, (m) -> {
-					onEventClick(tournament.getEvents().getByKey(marker.getEventId()));
+					Event eventToSelect = tournament.getEvents().getByKey(marker.getEventId());
+					tierEventList.getSelectionModel().select(eventToSelect);
+					tierEventList.scrollTo(eventToSelect);
 				});
-				mapMarkers.add(marker);
+				eventMarkers.put(id, marker);
 			});
 		}
-		
-		private void removeMapMarkers() {
-			map.removeMarkers(mapMarkers);
-			mapMarkers.clear();
+
+		private void removeEventMarkers() {
+			map.removeMarkers(eventMarkers.values());
+			eventMarkers.clear();
 		}
-		
-		private void onEventClick(Event event) {
-			System.out.println(event);
-			AvgTime.textProperty().set(tournament.getDriveTimes().calculateAverageDriveTime(event));
-			MaxTime.textProperty().set(tournament.getDriveTimes().calculateMaxDriveTime(event));			
+
+		private void removeSchoolMarkers() {
+			map.removeMarkers(schoolMarkers);
+			schoolMarkers.clear();
+		}
+
+		private void onEventClick(EventMarker marker) {
+			if (selectedMarker != null) {
+				selectedMarker.getJSObject().call("setIcon", MarkerImageFactory
+						.createMarkerImage("/view/img/school_icon_red.png", "png").replace("(", "").replace(")", ""));
+			}
+
+			onEventSelected(tournament.getEvents().getByKey(marker.getEventId()));
+			marker.getJSObject().call("setIcon", MarkerImageFactory
+					.createMarkerImage("/view/img/school_icon_green.png", "png").replace("(", "").replace(")", ""));
+			selectedMarker = marker;
+		}
+
+		private void onEventSelected(Event event) {
+			avgTime.textProperty().set(tournament.getDriveTimes().calculateAverageDriveTime(event));
+			maxTime.textProperty().set(tournament.getDriveTimes().calculateMaxDriveTime(event));
+
+			eventHostName.setText(event.getHost().getName());
+			eventInfoPane.setVisible(true);
+
+			MarkerOptions markerOptions = new MarkerOptions();
+			markerOptions.icon(MarkerImageFactory.createMarkerImage("/view/img/school_icon_small.png", "png")
+					.replace("(", "").replace(")", ""));
+
+			removeSchoolMarkers();
+			event.getAttendingSchools().forEach((school) -> {
+				if (school.getId() != event.getHost().getId()) {
+					markerOptions.position(new LatLong(school.getLat(), school.getLon()));
+					markerOptions.title(school.getName());
+					Marker marker = new Marker(markerOptions);
+
+					map.addMarker(marker);
+					schoolMarkers.add(marker);
+				}
+			});
 		}
 
 		@FXML
 		protected void onCloseButton(ActionEvent event) {
+			TournamentWriter tw = new TournamentWriter();
+			try {
+				tw.tournamentWrite(tournament, "Test Tournament");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			Platform.exit();
 		}
 
