@@ -27,7 +27,7 @@ public class TournamentWriter {
 	private String semiStr = null;
 
 	public void tournamentWrite(Tournament current, String name) throws IOException {
-		String path = "resources\\" + name;
+		String path = "resources/data/" + name;
 
 		// call xWrite() to return string with raw csv content
 		schoolStr = schoolWrite(current.getSchools());
@@ -36,46 +36,48 @@ public class TournamentWriter {
 		semiStr = semiWrite(current.getEvents().getSemiStates());
 
 		// create a directory named after Tournament in resources>name.csv
-		makeFiles(path + "description.txt");
+		if (makeFiles(path + "/description.txt")) {
+			System.out.println("Saved: " + name);
+		} else {
+			System.out.println("Could not create " + name);
+		}
 	}
 
-	public boolean makeFiles(String name) throws IOException {
+	private boolean makeFiles(String name) throws IOException {
+		boolean result = false;
 		// dir contains outFile, which contains description.txt
 		// outFile is not used other than to create dir
-
 		File outFile = new File(name);
 		File dir = outFile.getParentFile();
 
 		// check if folder with current name exists
 		if (!dir.exists()) {
 			dir.mkdir();
-			System.out.println("Folder created : " + dir.getName());
-			// below will create a description.txt for tournament
-			// outFile.createNewFile();
-			// writer(outFile, outFile.getName());
-
+			// System.out.println("Folder created : " + dir.getName());
 		} else {
 			System.out.println("Folder exists: " + outFile.getParent());
+			return false;
 		}
 
 		// add csv files to directory
-		populate(dir, "Sectionals.csv", secStr);
-		populate(dir, "Regionals.csv", regStr);
-		populate(dir, "SemiState.csv", semiStr);
-		populate(dir, "Schools.csv", schoolStr);
+		result = populate(dir, "Sectionals.csv", secStr);
+		result = populate(dir, "Regionals.csv", regStr);
+		result = populate(dir, "SemiStates.csv", semiStr);
+		result = populate(dir, "Schools.csv", schoolStr);
 
-		System.out.println("Done");
-		return true;
+		return result;
 	}
 
 	/**
-	 * @param parent Directory that new file should be in
-	 * @param name Name of file to be created
-	 * @param content Data that file should contain
+	 * @param parent
+	 *            Directory that new file should be in
+	 * @param name
+	 *            Name of file to be created
+	 * @param content
+	 *            Data that file should contain
 	 * @throws IOException
 	 */
-	public void populate(File parent, String name, String content) throws IOException {
-
+	private boolean populate(File parent, String name, String content) throws IOException {
 		// check if folder with same name exists
 		if (parent.exists()) {
 			File t = new File(parent, name);
@@ -83,6 +85,8 @@ public class TournamentWriter {
 			// check if file within folder shares the new files name
 			if (t.exists()) {
 				System.out.println("File exists: " + name);
+				return false;
+
 			} else {
 				// create new file and write in csv content
 				t.createNewFile();
@@ -90,27 +94,32 @@ public class TournamentWriter {
 			}
 		} else {
 			System.out.println("No directory " + parent.getName());
+			return false;
 		}
+		return true;
 	}
 
 	/**
-	 * @param target Given file to write
-	 * @param content Data to write into target file
+	 * @param target
+	 *            Given file to write
+	 * @param content
+	 *            Data to write into target file
 	 * @throws IOException
 	 */
-	public void writer(File target, String content) throws IOException {
+	private void writer(File target, String content) throws IOException {
 		FileWriter fw = new FileWriter(target);
 		fw.write(content);
 		fw.flush();
 		fw.close();
-		System.out.println("File written : " + target.toString());
+		// System.out.println("File written : " + target.toString());
 	}
 
 	/**
-	 * @param table Table from current tournament object
+	 * @param table
+	 *            Table from current tournament object
 	 * @return String of formatted csv content
 	 */
-	public String schoolWrite(SchoolTable table) {
+	private String schoolWrite(SchoolTable table) {
 
 		final String Header = "SchoolName,SchoolID,Address,City,State,Zip,Lat,Lon\n";
 		StringBuilder sb = new StringBuilder();
@@ -121,8 +130,8 @@ public class TournamentWriter {
 			sb.append(school.getName() + ",");
 			sb.append(school.getId() + ",");
 			sb.append(school.getAddress() + ",");
-			sb.append(school.getLon() + ",");
-			sb.append(school.getLat());
+			sb.append(school.getLat() + ",");
+			sb.append(school.getLon());
 			sb.append("\n");
 		});
 
@@ -130,10 +139,11 @@ public class TournamentWriter {
 	}
 
 	/**
-	 * @param table Table from current tournament object
+	 * @param table
+	 *            Table from current tournament object
 	 * @return String of formatted csv content
 	 */
-	public String sectionalWrite(EventTable table) {
+	private String sectionalWrite(EventTable table) {
 
 		final String Header = "Host,SectionalID,Schools\n";
 		StringBuilder sb = new StringBuilder();
@@ -153,10 +163,11 @@ public class TournamentWriter {
 	}
 
 	/**
-	 * @param table Table from current tournament object
+	 * @param table
+	 *            Table from current tournament object
 	 * @return String of formatted csv content
 	 */
-	public String regionalWrite(EventTable table) {
+	private String regionalWrite(EventTable table) {
 
 		final String Header = "Host,RegionalID,Sectionals\n";
 		StringBuilder sb = new StringBuilder();
@@ -176,10 +187,11 @@ public class TournamentWriter {
 	}
 
 	/**
-	 * @param table Table from current tournament object
+	 * @param table
+	 *            Table from current tournament object
 	 * @return String of formatted csv content
 	 */
-	public String semiWrite(EventTable table) {
+	private String semiWrite(EventTable table) {
 
 		final String Header = "Host,SemiStatesID,Regionals\n";
 		StringBuilder sb = new StringBuilder();

@@ -46,7 +46,7 @@ public class SchoolReader {
 				t = token.nextToken();
 				t = t.trim();
 				id = Integer.parseUnsignedInt(t);
-				address = token.nextToken() + ", " + token.nextToken() + ", " + token.nextToken() + token.nextToken();
+				address = token.nextToken() + "," + token.nextToken() + "," + token.nextToken() +","+ token.nextToken();
 				t = token.nextToken();
 				t = t.trim();
 				lat = Double.parseDouble(t);
