@@ -11,12 +11,12 @@ import com.lynden.gmapsfx.javascript.object.Marker;
 import com.lynden.gmapsfx.javascript.object.MarkerOptions;
 import com.lynden.gmapsfx.util.MarkerImageFactory;
 import events.Event;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -28,6 +28,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
@@ -268,14 +269,29 @@ public class App extends Application {
 		}
 
 		@FXML
-		protected void onCloseButton(ActionEvent event) {
-			TournamentWriter tw = new TournamentWriter();
-			try {
-				tw.tournamentWrite(tournament, "Test Tournament");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+		protected void onSaveButton(ActionEvent event) {
+			TextInputDialog saveDialog = new TextInputDialog();
+
+			saveDialog.setTitle("Save Tournament");
+			saveDialog.setHeaderText(null);
+			saveDialog.setGraphic(null);
+			saveDialog.setContentText("Tournament Name:");
+
+			Optional<String> tournamentName = saveDialog.showAndWait();
+
+			if (tournamentName.isPresent() && !tournamentName.get().equals("")) {
+				TournamentWriter tw = new TournamentWriter();
+				try {
+					tw.tournamentWrite(tournament, tournamentName.get());
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
+		}
+
+		@FXML
+		protected void onCloseButton(ActionEvent event) {
 			Platform.exit();
 		}
 
