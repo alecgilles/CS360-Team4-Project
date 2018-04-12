@@ -92,6 +92,7 @@ public class App extends Application {
 
 		Parent root = loader.load();
 		Scene scene = new Scene(root);
+		scene.getStylesheets().add(getClass().getResource("/view/css/stylesheet.css").toExternalForm());
 
 		// Workaround that keeps Application from flashing during initial load.
 		Screen screen = Screen.getPrimary();

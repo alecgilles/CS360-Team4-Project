@@ -9,7 +9,6 @@ import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.text.Text;
 
 public class EventCell extends ListCell<Event> {
 	private final EventCellController eventCellController;
@@ -36,7 +35,7 @@ public class EventCell extends ListCell<Event> {
 	
 	private class EventCellController {
 		@FXML
-		private Text hostSchoolName;
+		private Label hostSchoolName;
 		
 		@FXML
 		private Label attendingSchools;

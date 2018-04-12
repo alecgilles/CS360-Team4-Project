@@ -23,10 +23,12 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu text="_File">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#onSaveButton" text="Save" />
-              <MenuItem mnemonicParsing="false" onAction="#onCloseButton" text="Close" />
+                  <MenuItem text="_Open" />
+              <MenuItem onAction="#onSaveButton" text="_Save" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+              <MenuItem onAction="#onCloseButton" text="E_xit" />
             </items>
           </Menu>
         </menus>
@@ -37,7 +39,7 @@
         <tabs>
           <Tab closable="false" text="Table">
             <content>
-              <ListView fx:id="tierEventList" />
+              <ListView id="tierEventList" fx:id="tierEventList" />
             </content>
           </Tab>
           <Tab closable="false" text="Map">
@@ -49,7 +51,7 @@
       </TabPane>
    </center>
    <left>
-      <AnchorPane BorderPane.alignment="CENTER">
+      <AnchorPane style="-fx-border-color: grey; -fx-border-width: 0 1 0 0;" BorderPane.alignment="CENTER">
          <children>
             <ComboBox fx:id="levelSelectCombo" disable="true" onAction="#onLevelSelect" prefHeight="30.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0" />
             <GridPane fx:id="eventInfoPane" style="-fx-border-color: grey; -fx-border-radius: 3;" visible="false" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="40.0">
@@ -73,8 +75,8 @@
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Avg Travel Time:" GridPane.halignment="LEFT" />
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Max Travel Time:" GridPane.halignment="LEFT" GridPane.rowIndex="1" />
-                        <Text fx:id="avgTime" strokeType="OUTSIDE" strokeWidth="0.0" text="0hrs 00mins" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
-                        <Text fx:id="maxTime" strokeType="OUTSIDE" strokeWidth="0.0" text="0hrs 00mins" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <Text fx:id="avgTime" strokeType="OUTSIDE" strokeWidth="0.0" text="0h 00mins" GridPane.columnIndex="1" GridPane.halignment="CENTER" />
+                        <Text fx:id="maxTime" strokeType="OUTSIDE" strokeWidth="0.0" text="0h 00mins" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                      </children>
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
