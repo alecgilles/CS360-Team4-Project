@@ -35,6 +35,8 @@ public abstract class Event {
 	}
 
 	public abstract ArrayList<School> getAttendingSchools();
+	
+	public abstract String getEventTypeAsString();
 
 	@Override
 	public String toString() {
