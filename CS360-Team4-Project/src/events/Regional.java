@@ -31,4 +31,9 @@ public class Regional extends Event {
 
 		return schoolList;
 	}
+
+	@Override
+	public String getEventTypeAsString() {
+		return "Regional";
+	}
 }

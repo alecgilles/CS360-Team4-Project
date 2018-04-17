@@ -1,19 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
-   <top>
-      <Text fx:id="hostSchoolName" strokeType="OUTSIDE" strokeWidth="0.0" text="Example Host" BorderPane.alignment="CENTER_LEFT">
-         <font>
-            <Font name="System Bold" size="13.0" />
-         </font>
-      </Text>
-   </top>
+<BorderPane id="eventBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: grey; -fx-border-radius: 3;" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <Label fx:id="attendingSchools" alignment="TOP_LEFT" wrapText="true" BorderPane.alignment="CENTER" />
+      <Label id="attendingSchoolsList" fx:id="attendingSchools" alignment="TOP_LEFT" style="-fx-background-color: white;" text="Test" wrapText="true" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding></Label>
    </center>
+   <top>
+      <HBox id="eventHeader" style="-fx-border-color: grey; -fx-background-color: lightgrey; -fx-border-width: 0 0 1 0;" BorderPane.alignment="CENTER_LEFT">
+         <children>
+            <Label fx:id="hostSchoolName" text="Example Text">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+   <opaqueInsets>
+      <Insets />
+   </opaqueInsets>
 </BorderPane>

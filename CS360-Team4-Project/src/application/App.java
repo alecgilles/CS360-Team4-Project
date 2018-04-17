@@ -4,6 +4,7 @@ import com.lynden.gmapsfx.GoogleMapView;
 import com.lynden.gmapsfx.MapComponentInitializedListener;
 import com.lynden.gmapsfx.javascript.event.UIEventType;
 import com.lynden.gmapsfx.javascript.object.GoogleMap;
+import com.lynden.gmapsfx.javascript.object.InfoWindow;
 import com.lynden.gmapsfx.javascript.object.LatLong;
 import com.lynden.gmapsfx.javascript.object.MapOptions;
 import com.lynden.gmapsfx.javascript.object.MapTypeIdEnum;
@@ -75,6 +76,7 @@ public class App extends Application {
 
 		Parent root = loader.load();
 		Scene scene = new Scene(root);
+		scene.getStylesheets().add(getClass().getResource("/view/css/stylesheet.css").toExternalForm());
 
 		// Workaround that keeps Application from flashing during initial load.
 		Screen screen = Screen.getPrimary();
@@ -117,6 +119,7 @@ public class App extends Application {
 		private Marker selectedMarker;
 		private HashMap<Integer, Marker> eventMarkers;
 		private ArrayList<Marker> schoolMarkers;
+		private InfoWindow openInfoWindow;
 
 		public void initialize() {
 			levelSelectCombo.getItems().setAll(EVENT_LEVELS);
@@ -152,6 +155,19 @@ public class App extends Application {
 			tierEventList.getSelectionModel().selectedItemProperty().addListener((event, oldVal, newVal) -> {
 				if (newVal != null) {
 					onEventClick((EventMarker) eventMarkers.get(newVal.getId()));
+				}
+			});
+			
+			map.addUIEventHandler(UIEventType.click, (e) -> {
+				if (selectedMarker != null) {
+					selectedMarker.getJSObject().call("setIcon", MarkerImageFactory
+							.createMarkerImage("/view/img/school_icon_red.png", "png").replace("(", "").replace(")", ""));
+					removeSchoolMarkers();
+					eventInfoPane.setVisible(false);
+					if(openInfoWindow != null) {
+						openInfoWindow.close();
+					}
+					tierEventList.getSelectionModel().clearSelection();
 				}
 			});
 
@@ -216,12 +232,25 @@ public class App extends Application {
 		}
 
 		private void onEventClick(EventMarker marker) {
+			Event event = tournament.getEvents().getByKey(marker.getEventId());
+			
 			if (selectedMarker != null) {
 				selectedMarker.getJSObject().call("setIcon", MarkerImageFactory
 						.createMarkerImage("/view/img/school_icon_red.png", "png").replace("(", "").replace(")", ""));
 			}
 
-			onEventSelected(tournament.getEvents().getByKey(marker.getEventId()));
+			onEventSelected(event);
+			
+			if(openInfoWindow != null) {
+				openInfoWindow.close();
+			}
+			
+			InfoWindow schoolInfo = new InfoWindow();
+			schoolInfo.setContent(event.getEventTypeAsString() +": "+ event.getHost().getName());
+			
+			schoolInfo.open(map, marker);
+			openInfoWindow = schoolInfo;
+			
 			marker.getJSObject().call("setIcon", MarkerImageFactory
 					.createMarkerImage("/view/img/school_icon_green.png", "png").replace("(", "").replace(")", ""));
 			selectedMarker = marker;
@@ -244,6 +273,18 @@ public class App extends Application {
 					markerOptions.position(new LatLong(school.getLat(), school.getLon()));
 					markerOptions.title(school.getName());
 					Marker marker = new Marker(markerOptions);
+					
+					map.addUIEventHandler(marker, UIEventType.click, (m) -> {
+						if(openInfoWindow != null) {
+							openInfoWindow.close();
+						}
+						
+						InfoWindow schoolInfo = new InfoWindow();
+						schoolInfo.setContent(school.getName());
+						
+						schoolInfo.open(map, marker);
+						openInfoWindow = schoolInfo;
+					});
 
 					map.addMarker(marker);
 					schoolMarkers.add(marker);

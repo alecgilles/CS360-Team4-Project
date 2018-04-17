@@ -28,4 +28,9 @@ public class Sectional extends Event {
 
 		return schoolList;
 	}
+
+	@Override
+	public String getEventTypeAsString() {
+		return "Sectional";
+	}
 }
