@@ -56,15 +56,16 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
 		// fancy new tournament reader and directory sniffer
 		TournamentReader tr = new TournamentReader();
 		SchoolTable allSchools = new SchoolTable();
 		EventTable allEvents = new EventTable();
 		TimeTable driveTimes = new TimeTable();
-		
+
 		// pass empty string "" for standard load from data
 		tournament = tr.tournamentRead("", allSchools, allEvents, driveTimes);
-		System.out.println("Tournament list:"+tr.findTournaments().toString());
+		System.out.println("Tournament list:" + tr.findTournaments().toString());
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"));
 		controller = new MainController();
@@ -144,7 +145,8 @@ public class App extends Application {
 				JSObject mapStyles = (JSObject) mapView.getWebview().getEngine().executeScript("mapStyles");
 				mapOptions.getJSObject().setMember("styles", mapStyles);
 			} catch (Exception e) {
-				// Exception here is possible but will only result in Points of Interest being
+				// Exception here is possible but will only result in Points of
+				// Interest being
 				// shown, which is hardly fatal
 			}
 
@@ -157,21 +159,23 @@ public class App extends Application {
 					onEventClick((EventMarker) eventMarkers.get(newVal.getId()));
 				}
 			});
-			
+
 			map.addUIEventHandler(UIEventType.click, (e) -> {
 				if (selectedMarker != null) {
-					selectedMarker.getJSObject().call("setIcon", MarkerImageFactory
-							.createMarkerImage("/view/img/school_icon_red.png", "png").replace("(", "").replace(")", ""));
+					selectedMarker.getJSObject().call("setIcon",
+							MarkerImageFactory.createMarkerImage("/view/img/school_icon_red.png", "png")
+									.replace("(", "").replace(")", ""));
 					removeSchoolMarkers();
 					eventInfoPane.setVisible(false);
-					if(openInfoWindow != null) {
+					if (openInfoWindow != null) {
 						openInfoWindow.close();
 					}
 					tierEventList.getSelectionModel().clearSelection();
 				}
 			});
 
-			// levelSelectCombo is disabled by default to prevent user interaction before
+			// levelSelectCombo is disabled by default to prevent user
+			// interaction before
 			// the map is initialized.
 			levelSelectCombo.setDisable(false);
 			onLevelSelect(null);
@@ -233,24 +237,24 @@ public class App extends Application {
 
 		private void onEventClick(EventMarker marker) {
 			Event event = tournament.getEvents().getByKey(marker.getEventId());
-			
+
 			if (selectedMarker != null) {
 				selectedMarker.getJSObject().call("setIcon", MarkerImageFactory
 						.createMarkerImage("/view/img/school_icon_red.png", "png").replace("(", "").replace(")", ""));
 			}
 
 			onEventSelected(event);
-			
-			if(openInfoWindow != null) {
+
+			if (openInfoWindow != null) {
 				openInfoWindow.close();
 			}
-			
+
 			InfoWindow schoolInfo = new InfoWindow();
-			schoolInfo.setContent(event.getEventTypeAsString() +": "+ event.getHost().getName());
-			
+			schoolInfo.setContent(event.getEventTypeAsString() + ": " + event.getHost().getName());
+
 			schoolInfo.open(map, marker);
 			openInfoWindow = schoolInfo;
-			
+
 			marker.getJSObject().call("setIcon", MarkerImageFactory
 					.createMarkerImage("/view/img/school_icon_green.png", "png").replace("(", "").replace(")", ""));
 			selectedMarker = marker;
@@ -273,15 +277,15 @@ public class App extends Application {
 					markerOptions.position(new LatLong(school.getLat(), school.getLon()));
 					markerOptions.title(school.getName());
 					Marker marker = new Marker(markerOptions);
-					
+
 					map.addUIEventHandler(marker, UIEventType.click, (m) -> {
-						if(openInfoWindow != null) {
+						if (openInfoWindow != null) {
 							openInfoWindow.close();
 						}
-						
+
 						InfoWindow schoolInfo = new InfoWindow();
 						schoolInfo.setContent(school.getName());
-						
+
 						schoolInfo.open(map, marker);
 						openInfoWindow = schoolInfo;
 					});
