@@ -35,11 +35,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import netscape.javascript.JSObject;
-import readers.RegionalReader;
-import readers.SchoolReader;
-import readers.SectionalReader;
-import readers.SemistateReader;
-import readers.TimeTableReader;
+import readers.TournamentReader;
 import tables.EventTable;
 import tables.SchoolTable;
 import tables.TimeTable;
@@ -60,28 +56,15 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		tournament = Tournament.getTournament();
-
+		// fancy new tournament reader and directory sniffer
+		TournamentReader tr = new TournamentReader();
 		SchoolTable allSchools = new SchoolTable();
 		EventTable allEvents = new EventTable();
 		TimeTable driveTimes = new TimeTable();
-
-		SchoolReader schoolReader = new SchoolReader();
-		SectionalReader sectionalReader = new SectionalReader();
-		RegionalReader regionalReader = new RegionalReader();
-		SemistateReader semistateReader = new SemistateReader();
-		TimeTableReader timeTableReader = new TimeTableReader();
-
-		allSchools = schoolReader.readFile("resources/data/Schools.csv", allSchools);
-		tournament.setSchools(allSchools);
-
-		allEvents = sectionalReader.readFile("resources/data/Sectionals.csv", allSchools, allEvents);
-		allEvents = regionalReader.readFile("resources/data/Regionals.csv", allSchools, allEvents);
-		allEvents = semistateReader.readFile("resources/data/SemiStates.csv", allSchools, allEvents);
-		tournament.setEvents(allEvents);
-
-		driveTimes = timeTableReader.readFile("resources/data/DriveTimesTable.csv", driveTimes);
-		tournament.setDriveTimes(driveTimes);
+		
+		// pass empty string "" for standard load from data
+		tournament = tr.tournamentRead("", allSchools, allEvents, driveTimes);
+		System.out.println("Tournament list:"+tr.findTournaments().toString());
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"));
 		controller = new MainController();
