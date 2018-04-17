@@ -5,18 +5,17 @@
  */
 package readers;
 
+import application.School;
+import application.Tournament;
+import events.Regional;
+import events.Sectional;
+import events.SemiState;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-
-import application.School;
-import application.Tournament;
-import events.Regional;
-import events.Sectional;
-import events.SemiState;
 import tables.EventTable;
 import tables.SchoolTable;
 import tables.TimeTable;
@@ -26,12 +25,13 @@ import tables.TimeTable;
  *
  */
 public class TournamentReader {
+	private static final String DATA_PATH = "resources/data/";
 
 	public Tournament tournamentRead(String name, SchoolTable allSchools, EventTable allEvents, TimeTable driveTimes)
 			throws IOException {
 		// create standard path and tournament
 		Tournament tournament = Tournament.getTournament();
-		String path = "resources/data/";
+		String path = DATA_PATH;
 
 		// read in timetable before entering data>name
 		driveTimes = driveTimeRead(path + "DriveTimesTable.csv", driveTimes);
@@ -71,13 +71,13 @@ public class TournamentReader {
 	 * @return tournamentList list of tournaments found in data
 	 */
 	public ArrayList<String> findTournaments() {
-		String dataPath = "resources/data/";
 		ArrayList<String> tournamentList = new ArrayList<String>();
-		File[] list = new File(dataPath).listFiles();
+		File[] list = new File(DATA_PATH).listFiles();
 
 		for (int i = 0; i < list.length; i++) {
 			if (list[i].isDirectory()) {
-				tournamentList.add(list[i].toString());
+				String[] tournamentExploded = list[i].toString().split("\\\\");
+				tournamentList.add(tournamentExploded[tournamentExploded.length - 1]);
 			}
 		}
 		return tournamentList;

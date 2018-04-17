@@ -49,6 +49,7 @@ public class App extends Application {
 
 	private Tournament tournament;
 	private MainController controller;
+	private TournamentReader tr;
 
 	public static void main(String[] args) {
 		launch();
@@ -56,9 +57,9 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
+
 		// fancy new tournament reader and directory sniffer
-		TournamentReader tr = new TournamentReader();
+		tr = new TournamentReader();
 		SchoolTable allSchools = new SchoolTable();
 		EventTable allEvents = new EventTable();
 		TimeTable driveTimes = new TimeTable();
@@ -295,17 +296,13 @@ public class App extends Application {
 				}
 			});
 		}
-		
+
 		@FXML
 		protected void onOpenButton(ActionEvent event) {
-			ArrayList<String> testLoadList = new ArrayList<>();
-			testLoadList.add("Tournament 1");
-			testLoadList.add("Tournament 2");
-			
-			OpenTournamentDialog openDialog = new OpenTournamentDialog(testLoadList);
-			
+			OpenTournamentDialog openDialog = new OpenTournamentDialog(tr.findTournaments());
+
 			Optional<String> tournamentToLoad = openDialog.showAndWait();
-			
+
 			System.out.println(tournamentToLoad);
 		}
 
