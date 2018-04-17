@@ -308,6 +308,19 @@ public class App extends Application {
 				}
 			});
 		}
+		
+		@FXML
+		protected void onOpenButton(ActionEvent event) {
+			ArrayList<String> testLoadList = new ArrayList<>();
+			testLoadList.add("Tournament 1");
+			testLoadList.add("Tournament 2");
+			
+			OpenTournamentDialog openDialog = new OpenTournamentDialog(testLoadList);
+			
+			Optional<String> tournamentToLoad = openDialog.showAndWait();
+			
+			System.out.println(tournamentToLoad);
+		}
 
 		@FXML
 		protected void onSaveButton(ActionEvent event) {
