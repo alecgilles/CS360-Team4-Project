@@ -27,29 +27,27 @@ import tables.TimeTable;
 public class TournamentReader {
 	private static final String DATA_PATH = "resources/data/";
 
-	public Tournament tournamentRead(String name, SchoolTable allSchools, EventTable allEvents, TimeTable driveTimes)
-			throws IOException {
+	public Tournament tournamentRead(String name) throws IOException {
+		SchoolTable allSchools = new SchoolTable();
+		EventTable allEvents = new EventTable();
+		TimeTable driveTimes = new TimeTable();
+
 		// create standard path and tournament
 		Tournament tournament = Tournament.getTournament();
 		String path = DATA_PATH;
 
-		// read in timetable before entering data>name
+		// read in timetable and schooltable before entering data>name
 		driveTimes = driveTimeRead(path + "DriveTimesTable.csv", driveTimes);
 		tournament.setDriveTimes(driveTimes);
 
-		// checks if name is empty string (standard load)
-		if (name != "") {
-			path = path + name + "/";
-		}
+		allSchools = schoolRead(path + "Schools.csv", allSchools);
+		tournament.setSchools(allSchools);
+
+		path = path + name + "/";
 
 		// check for name as dir in data
 		File checkDir = new File(path);
 		if (checkDir.exists() && checkDir.isDirectory()) {
-
-			// reads SchoolTable before EventTable
-			allSchools = schoolRead(path + "Schools.csv", allSchools);
-			tournament.setSchools(allSchools);
-
 			// check in data>name for Sec, Reg, Semi csv files
 			allEvents = sectionalRead(path + "Sectionals.csv", allSchools, allEvents);
 			allEvents = regionalRead(path + "Regionals.csv", allSchools, allEvents);

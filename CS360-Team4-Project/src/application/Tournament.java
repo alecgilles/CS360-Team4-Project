@@ -46,9 +46,9 @@ public class Tournament extends Observable {
 	 * @param events the events to set
 	 */
 	public void setEvents(EventTable events) {
+		this.events = events;
 		setChanged();
 		notifyObservers();
-		this.events = events;
 	}
 
 	/**
@@ -62,9 +62,9 @@ public class Tournament extends Observable {
 	 * @param schools the schools to set
 	 */
 	public void setSchools(SchoolTable schools) {
+		this.schools = schools;
 		setChanged();
 		notifyObservers();
-		this.schools = schools;
 	}
 
 	/**
@@ -79,6 +79,8 @@ public class Tournament extends Observable {
 	 */
 	public void setDriveTimes(TimeTable driveTimes) {
 		this.driveTimes = driveTimes;
+		setChanged();
+		notifyObservers();
 	}
 
 }

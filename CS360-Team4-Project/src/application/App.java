@@ -37,8 +37,6 @@ import javafx.stage.Stage;
 import netscape.javascript.JSObject;
 import readers.TournamentReader;
 import tables.EventTable;
-import tables.SchoolTable;
-import tables.TimeTable;
 import writers.TournamentWriter;
 
 public class App extends Application {
@@ -58,23 +56,14 @@ public class App extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 
+		tournament = Tournament.getTournament();
 		// fancy new tournament reader and directory sniffer
 		tr = new TournamentReader();
-		SchoolTable allSchools = new SchoolTable();
-		EventTable allEvents = new EventTable();
-		TimeTable driveTimes = new TimeTable();
-
-		// pass empty string "" for standard load from data
-		tournament = tr.tournamentRead("", allSchools, allEvents, driveTimes);
-		System.out.println("Tournament list:" + tr.findTournaments().toString());
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/MainView.fxml"));
 		controller = new MainController();
 		loader.setController(controller);
 		tournament.addObserver(controller);
-		allEvents.addObserver(controller);
-		allSchools.addObserver(controller);
-		driveTimes.addObserver(controller);
 
 		Parent root = loader.load();
 		Scene scene = new Scene(root);
@@ -174,12 +163,6 @@ public class App extends Application {
 					tierEventList.getSelectionModel().clearSelection();
 				}
 			});
-
-			// levelSelectCombo is disabled by default to prevent user
-			// interaction before
-			// the map is initialized.
-			levelSelectCombo.setDisable(false);
-			onLevelSelect(null);
 		}
 
 		@Override
@@ -221,6 +204,16 @@ public class App extends Application {
 					Event eventToSelect = tournament.getEvents().getByKey(marker.getEventId());
 					tierEventList.getSelectionModel().select(eventToSelect);
 					tierEventList.scrollTo(eventToSelect);
+					
+					if (openInfoWindow != null) {
+						openInfoWindow.close();
+					}
+
+					InfoWindow schoolInfo = new InfoWindow();
+					schoolInfo.setContent(event.getEventTypeAsString() + ": " + event.getHost().getName());
+
+					schoolInfo.open(map, marker);
+					openInfoWindow = schoolInfo;
 				});
 				eventMarkers.put(id, marker);
 			});
@@ -245,16 +238,6 @@ public class App extends Application {
 			}
 
 			onEventSelected(event);
-
-			if (openInfoWindow != null) {
-				openInfoWindow.close();
-			}
-
-			InfoWindow schoolInfo = new InfoWindow();
-			schoolInfo.setContent(event.getEventTypeAsString() + ": " + event.getHost().getName());
-
-			schoolInfo.open(map, marker);
-			openInfoWindow = schoolInfo;
 
 			marker.getJSObject().call("setIcon", MarkerImageFactory
 					.createMarkerImage("/view/img/school_icon_green.png", "png").replace("(", "").replace(")", ""));
@@ -303,7 +286,18 @@ public class App extends Application {
 
 			Optional<String> tournamentToLoad = openDialog.showAndWait();
 
-			System.out.println(tournamentToLoad);
+			try {
+				if(tournamentToLoad.isPresent()) {
+					tournament = tr.tournamentRead(tournamentToLoad.get());
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			// levelSelectCombo is disabled by default to prevent user
+			// interaction before
+			// the tournament is loaded.
+			levelSelectCombo.setDisable(false);
 		}
 
 		@FXML
