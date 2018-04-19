@@ -40,20 +40,19 @@ public class TournamentReader {
 		driveTimes = driveTimeRead(path + "DriveTimesTable.csv", driveTimes);
 		tournament.setDriveTimes(driveTimes);
 
-		allSchools = schoolRead(path + "Schools.csv", allSchools);
-		tournament.setSchools(allSchools);
-
 		path = path + name + "/";
 
 		// check for name as dir in data
 		File checkDir = new File(path);
 		if (checkDir.exists() && checkDir.isDirectory()) {
+			allSchools = schoolRead(path + "Schools.csv", allSchools);
+			tournament.setSchools(allSchools);
+			
 			// check in data>name for Sec, Reg, Semi csv files
 			allEvents = sectionalRead(path + "Sectionals.csv", allSchools, allEvents);
 			allEvents = regionalRead(path + "Regionals.csv", allSchools, allEvents);
 			allEvents = semiStateRead(path + "SemiStates.csv", allSchools, allEvents);
 			tournament.setEvents(allEvents);
-
 		} else {
 			System.out.println("No directory " + checkDir.getName());
 		}
