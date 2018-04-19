@@ -45,6 +45,7 @@ public class App extends Application {
 	private static final double MINIMUM_HEIGHT = 600.0;
 	private static final String[] EVENT_LEVELS = { "Semi-State Events", "Regional Events", "Sectional Events" };
 
+	private Stage primaryStage;
 	private Tournament tournament;
 	private MainController controller;
 	private TournamentReader tr;
@@ -55,7 +56,8 @@ public class App extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-
+		this.primaryStage = primaryStage;
+		
 		tournament = Tournament.getTournament();
 		// fancy new tournament reader and directory sniffer
 		tr = new TournamentReader();
@@ -72,6 +74,7 @@ public class App extends Application {
 		// Workaround that keeps Application from flashing during initial load.
 		Screen screen = Screen.getPrimary();
 		Rectangle2D bounds = screen.getBounds();
+
 		primaryStage.setWidth(bounds.getWidth());
 		primaryStage.setHeight(bounds.getHeight());
 
@@ -188,6 +191,8 @@ public class App extends Application {
 			tierEventList.getItems().addAll(events.getData().values());
 
 			eventInfoPane.setVisible(false);
+			
+			primaryStage.setTitle(APPLICATION_TITLE+" - "+tournament.getName());
 
 			MarkerOptions markerOptions = new MarkerOptions();
 

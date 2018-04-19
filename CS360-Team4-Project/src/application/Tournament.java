@@ -9,6 +9,7 @@ import tables.TimeTable;
 public class Tournament extends Observable {
 
 	private static Tournament tournament = new Tournament();
+	private String name;
 	private EventTable events;
 	private SchoolTable schools;
 	private TimeTable driveTimes;
@@ -33,6 +34,14 @@ public class Tournament extends Observable {
 	 */
 	public static void setTournament(Tournament tournament) {
 		Tournament.tournament = tournament;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	/**

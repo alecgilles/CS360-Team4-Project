@@ -45,6 +45,8 @@ public class TournamentReader {
 		// check for name as dir in data
 		File checkDir = new File(path);
 		if (checkDir.exists() && checkDir.isDirectory()) {
+			tournament.setName(name);
+			
 			allSchools = schoolRead(path + "Schools.csv", allSchools);
 			tournament.setSchools(allSchools);
 			
