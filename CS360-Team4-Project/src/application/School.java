@@ -10,6 +10,7 @@ public class School {
 	private String address;
 	private double lat;
 	private double lon;
+	private boolean isWillingHost;
 
 	// null constructor
 	public School() {
@@ -17,15 +18,18 @@ public class School {
 		this.id = -1;
 		this.setLat(-1);
 		this.setLon(-1);
+		this.setWillingHost(false);
+
 	}
 
 	// parameter constructor
-	public School(String name, int id, String address, double lat, double lon) {
+	public School(String name, int id, String address, double lat, double lon, boolean isHosting) {
 		this.name = name;
 		this.id = id;
 		this.address = address;
 		this.setLat(lat);
 		this.setLon(lon);
+		this.setWillingHost(isHosting);
 	}
 
 	/**
@@ -101,6 +105,23 @@ public class School {
 	 */
 	public void setLon(double lon) {
 		this.lon = lon;
+	}
+
+	/**
+	 * 
+	 * @param isHost
+	 * @return willingHost
+	 */
+	public boolean getWillingHost() {
+		return isWillingHost;
+	}
+
+	/**
+	 * @param isHost
+	 *            set school willingHost
+	 */
+	public void setWillingHost(boolean hosting) {
+		this.isWillingHost = hosting;
 	}
 
 	/*

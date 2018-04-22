@@ -121,7 +121,7 @@ public class TournamentWriter {
 	 */
 	private String schoolWrite(SchoolTable table) {
 
-		final String Header = "SchoolName,SchoolID,Address,City,State,Zip,Lat,Lon\n";
+		final String Header = "SchoolName,SchoolID,Address,City,State,Zip,Lat,Lon,WillingHost\n";
 		StringBuilder sb = new StringBuilder();
 		sb.append(Header);
 
@@ -131,7 +131,8 @@ public class TournamentWriter {
 			sb.append(school.getId() + ",");
 			sb.append(school.getAddress() + ",");
 			sb.append(school.getLat() + ",");
-			sb.append(school.getLon());
+			sb.append(school.getLon() + ",");
+			sb.append(school.getWillingHost());
 			sb.append("\n");
 		});
 
