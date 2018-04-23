@@ -1,6 +1,10 @@
 package application;
 
+import events.Sectional;
+
 import java.util.Observable;
+
+import javax.swing.JOptionPane;
 
 import tables.EventTable;
 import tables.SchoolTable;
@@ -90,6 +94,43 @@ public class Tournament extends Observable {
 		this.driveTimes = driveTimes;
 		setChanged();
 		notifyObservers();
+	}
+	
+	/**
+	 * @param newHost The school that is now willing to host events.
+	 */
+	public void addWillingHost(School newHost){
+
+	}
+	
+	/**
+	 * 
+	 * @param school The school that is moving sectionals.
+	 * @param newSectional The new sectional for the school.
+	 */
+	public void switchSchoolToSectional(School school, Sectional newSectional){
+		//find the current sectional and remove the school from its list of schools
+		events.getData().forEach((id, event) -> {
+			if (event instanceof Sectional){
+				SchoolTable secSchools = ((Sectional) event).getSchools();
+				if (secSchools.getByKey(school.getId()).equals(school)){
+					if (event.getHost().equals(school)){
+						int response = JOptionPane.showConfirmDialog(null, "This school is the host of it's current"
+								+ " sectional. Do you really want to move this school to a new sectional?"
+								, "Move School to New Sectional", JOptionPane.YES_NO_OPTION);
+						if (response != JOptionPane.YES_OPTION){
+							JOptionPane.showMessageDialog(null, "School sectional not changed.");
+							return;
+						}
+						else{
+							event.setHost(null);
+						}
+					}
+					secSchools.remove(school.getId());
+				}
+			}
+		});
+		newSectional.getSchools().add(school);
 	}
 
 }
