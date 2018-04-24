@@ -1,18 +1,23 @@
 package application;
 
 import java.io.IOException;
-import javafx.event.ActionEvent;
+import java.net.URL;
+import java.util.ResourceBundle;
+import javafx.beans.property.BooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Dialog;
 
 public class EditSchoolDialog extends Dialog<Boolean> {
-	private boolean isWillingToHost;
+	private BooleanProperty isWillingToHost;
+	private School school;
 
 	public EditSchoolDialog(School school) {
+		this.school = school;
 		Parent root;
 
 		this.setTitle("Edit " + school.getName());
@@ -32,7 +37,7 @@ public class EditSchoolDialog extends Dialog<Boolean> {
 
 		this.setResultConverter(dialogButton -> {
 			if (dialogButton == ButtonType.OK) {
-				school.setWillingHost(isWillingToHost);
+				school.setWillingHost(isWillingToHost.get());
 				return true;
 			}
 
@@ -40,13 +45,14 @@ public class EditSchoolDialog extends Dialog<Boolean> {
 		});
 	}
 
-	private class EditSchoolDialogController {
+	private class EditSchoolDialogController implements Initializable {
 		@FXML
 		CheckBox willingToHost;
 
-		@FXML
-		protected void onWillingToHostClick(ActionEvent event) {
-			isWillingToHost = willingToHost.isSelected();
+		@Override
+		public void initialize(URL location, ResourceBundle resources) {
+			willingToHost.setSelected(school.getWillingHost());
+			isWillingToHost = willingToHost.selectedProperty();
 		}
 	}
 }

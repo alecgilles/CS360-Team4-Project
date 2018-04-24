@@ -16,6 +16,6 @@
   </rowConstraints>
    <children>
       <Label text="Willing to Host Event:" />
-      <CheckBox fx:id="willingToHost" onAction="#onWillingToHostClick" mnemonicParsing="false" GridPane.columnIndex="1" />
+      <CheckBox fx:id="willingToHost" mnemonicParsing="false" GridPane.columnIndex="1" />
    </children>
 </GridPane>

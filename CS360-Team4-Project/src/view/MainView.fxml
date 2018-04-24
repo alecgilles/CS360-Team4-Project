@@ -26,7 +26,9 @@
           <Menu text="_File">
             <items>
                   <MenuItem onAction="#onOpenButton" text="_Open" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem fx:id="saveButton" disable="true" onAction="#onSaveButton" text="_Save" />
+                  <MenuItem mnemonicParsing="false" onAction="#onSaveAsButton" text="Save As..." />
                   <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem onAction="#onCloseButton" text="E_xit" />
             </items>

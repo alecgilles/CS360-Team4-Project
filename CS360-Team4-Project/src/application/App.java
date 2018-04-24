@@ -325,6 +325,16 @@ public class App extends Application {
 
 		@FXML
 		protected void onSaveButton(ActionEvent e) {
+			TournamentWriter tw = new TournamentWriter();
+			try {
+				tw.tournamentWrite(tournament, tournament.getName());
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
+		}
+		
+		@FXML
+		protected void onSaveAsButton(ActionEvent e) {
 			TextInputDialog saveDialog = new TextInputDialog();
 
 			saveDialog.setTitle("Save Tournament");
@@ -338,6 +348,7 @@ public class App extends Application {
 				TournamentWriter tw = new TournamentWriter();
 				try {
 					tw.tournamentWrite(tournament, tournamentName.get());
+					tournament = tr.tournamentRead(tournamentName.get());
 				} catch (IOException ex) {
 					ex.printStackTrace();
 				}
