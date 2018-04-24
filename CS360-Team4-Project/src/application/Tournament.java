@@ -1,5 +1,6 @@
 package application;
 
+import events.Event;
 import events.Sectional;
 
 import java.util.Observable;
@@ -99,8 +100,15 @@ public class Tournament extends Observable {
 	/**
 	 * @param newHost The school that is now willing to host events.
 	 */
-	public void addWillingHost(School newHost){
-
+	public void addWillingHost(School school){
+		school.setWillingHost(true);
+	}
+	
+	/**
+	 * @param newHost The school that is now willing to host events.
+	 */
+	public void removeWillingHost(School school){
+		school.setWillingHost(false);
 	}
 	
 	/**
@@ -116,7 +124,8 @@ public class Tournament extends Observable {
 				if (secSchools.getByKey(school.getId()).equals(school)){
 					if (event.getHost().equals(school)){
 						int response = JOptionPane.showConfirmDialog(null, "This school is the host of it's current"
-								+ " sectional. Do you really want to move this school to a new sectional?"
+								+ " sectional. If this school changes sectionals, the current sectional will no"
+								+ " longer have a host. Do you really want to move this school to a new sectional?"
 								, "Move School to New Sectional", JOptionPane.YES_NO_OPTION);
 						if (response != JOptionPane.YES_OPTION){
 							JOptionPane.showMessageDialog(null, "School sectional not changed.");
@@ -131,6 +140,21 @@ public class Tournament extends Observable {
 			}
 		});
 		newSectional.getSchools().add(school);
+	}
+	
+	/**
+	 * Change an event's host to a new school.
+	 * @param event The event that is changing hosts.
+	 * @param school The new host of event.
+	 */
+	public void changeEventHost(Event event, School school){
+		if(event.getWillingHostSchools().contains(school)){
+			event.setHost(school);
+		}
+		else{
+			JOptionPane.showMessageDialog(null, "School is not a willing host. Event host not changed.");
+			return;
+		}
 	}
 
 }

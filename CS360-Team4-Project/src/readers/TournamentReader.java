@@ -82,6 +82,7 @@ public class TournamentReader {
 		return tournamentList;
 	}
 
+	
 	/**
 	 * Read in schools from a file and add them to a list of schools in the
 	 * tournament
@@ -105,6 +106,7 @@ public class TournamentReader {
 			double lat = -1;
 			double lon = -1;
 			int id = -1;
+			boolean isWillingHost = false;
 
 			// Gobble up the header line
 			inputLine = br.readLine();
@@ -127,8 +129,12 @@ public class TournamentReader {
 				t = t.trim();
 				// set School longitude
 				lon = Double.parseDouble(t);
+				t = token.nextToken();
+				t = t.trim();
+				// set School isWillingHost
+				isWillingHost = t.matches("true");
 
-				allSchools.add(new School(name, id, address, lat, lon));
+				allSchools.add(new School(name, id, address, lat, lon, isWillingHost));
 
 			}
 			fr.close();
