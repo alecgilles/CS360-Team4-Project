@@ -139,5 +139,12 @@ public class School {
 		builder.append("]\n");
 		return builder.toString();
 	}
-
+	
+	public boolean equals(School school){
+		if (this.id == school.getId()){
+			return true;
+		}
+		return false;
+	}
+	
 }

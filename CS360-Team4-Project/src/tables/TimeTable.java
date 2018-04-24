@@ -1,6 +1,7 @@
 package tables;
 
 import application.School;
+import application.Tournament;
 import events.Event;
 
 import java.util.ArrayList;
@@ -15,20 +16,17 @@ public class TimeTable extends Observable {
 	}
 
 	/**
-	 * Calculates and returns the average drive time in hours and minutes for any
-	 * event.
+	 * Calculates and returns the average distance in miles for any event.
 	 * 
 	 * @param event
 	 *            Any event for which average drive time is needed.
 	 * @return A string representation of max drive time for an event.
 	 */
-	public String calculateAverageDriveTime(Event event) {
+	public String calculateAverageEventDriveTime(Event event) {
 
 		double average = 0;
 		double sum = 0;
 		double count = 0;
-		int hours = 0;
-		int minutes = 0;
 
 		ArrayList<School> schools = event.getAttendingSchools();
 		School host = event.getHost();
@@ -39,25 +37,21 @@ public class TimeTable extends Observable {
 		}
 
 		average = sum / count;
-		hours = (int) Math.floor(average / 60);
-		minutes = (int) Math.round(average % 60);
 
-		return hours + "h " + minutes + "mins";
+		return String.format("%1$, .2f", average) + " miles";
 	}
 
 	/**
-	 * Calculates the maximum drive time in hours and minutes for any event.
+	 * Calculates the maximum distance in miles for any event.
 	 * 
 	 * @param event
 	 *            Any event for which a maximum drive time is needed.
 	 * @return A string representation of max drive time for an event.
 	 */
-	public String calculateMaxDriveTime(Event event) {
+	public String calculateMaxEventDriveTime(Event event) {
 
 		double max = 0;
 		double current;
-		int hours = 0;
-		int minutes = 0;
 
 		ArrayList<School> schools = event.getAttendingSchools();
 		School host = event.getHost();
@@ -69,10 +63,8 @@ public class TimeTable extends Observable {
 			}
 		}
 
-		hours = (int) Math.floor(max / 60);
-		minutes = (int) Math.round(max % 60);
 
-		return hours + "h " + minutes + "mins";
+		return String.format("%1$, .2f", max) + " miles";
 	}
 
 	/**
@@ -80,6 +72,86 @@ public class TimeTable extends Observable {
 	 */
 	public double[][] getData() {
 		return data;
+	}
+	
+	/**
+	 * Calculates and returns the average distance in miles for any level of competition.
+	 * 
+	 * @param tournament The tournament.
+	 * @param level The level of competition in the tournament.
+	 * @return A string representation of average distance for the tournament level.
+	 */
+	public String calculateAverageLevelDriveTime(Tournament tournament, String level) {
+
+		double average = 0;
+		double sum = 0;
+		double count = 0;
+		
+		EventTable levelEvents = null;
+		
+		if(level.equals("Sectional")){
+			levelEvents = tournament.getEvents().getSectionals();
+		}
+		else if(level.equals("Regional")){
+			levelEvents = tournament.getEvents().getRegionals();
+		}
+		else{
+			levelEvents = tournament.getEvents().getSemiStates();
+		}
+		
+		for (int i = 0; i < levelEvents.size(); i++){
+			ArrayList<School> schools = levelEvents.getByKey(i).getAttendingSchools();
+			School host = levelEvents.getByKey(i).getHost();
+			
+			for (int j = 0; j < schools.size(); j++) {
+				sum += data[host.getId() - 1][schools.get(i).getId() - 1];
+				count++;
+			}
+		}
+
+		average = sum / count;
+
+		return String.format("%1$, .2f", average) + " miles";
+	}
+
+	/**
+	 * Calculates the maximum distance in miles for any level of competition.
+	 * 
+	 * @param tournament The tournament.
+	 * @param level The level of competition in the tournament.
+	 * @return A string representation of max distance for the tournament level.
+	 */
+	public String calculateMaxLevelDriveTime(Tournament tournament, String level) {
+
+		double max = 0;
+		double current;
+
+		EventTable levelEvents = null;
+		
+		if(level.equals("Sectional")){
+			levelEvents = tournament.getEvents().getSectionals();
+		}
+		else if(level.equals("Regional")){
+			levelEvents = tournament.getEvents().getRegionals();
+		}
+		else{
+			levelEvents = tournament.getEvents().getSemiStates();
+		}
+		
+		for(int i = 0; i < levelEvents.size(); i++){
+			ArrayList<School> schools = levelEvents.getByKey(i).getAttendingSchools();
+			School host = levelEvents.getByKey(i).getHost();
+			
+			for (int j = 0; j < schools.size(); j++) {
+				current = data[host.getId() - 1][schools.get(i).getId() - 1];
+				if (current > max) {
+					max = current;
+				}
+			}
+		}
+
+
+		return String.format("%1$, .2f", max) + " miles";
 	}
 
 	/**

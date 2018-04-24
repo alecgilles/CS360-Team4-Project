@@ -250,8 +250,8 @@ public class App extends Application {
 		}
 
 		private void onEventSelected(Event event) {
-			avgTime.textProperty().set(tournament.getDriveTimes().calculateAverageDriveTime(event));
-			maxTime.textProperty().set(tournament.getDriveTimes().calculateMaxDriveTime(event));
+			avgTime.textProperty().set(tournament.getDriveTimes().calculateAverageEventDriveTime(event));
+			maxTime.textProperty().set(tournament.getDriveTimes().calculateMaxEventDriveTime(event));
 
 			eventHostName.setText(event.getHost().getName());
 			eventInfoPane.setVisible(true);
