@@ -286,7 +286,7 @@ public class App extends Application {
 		}
 
 		@FXML
-		protected void onOpenButton(ActionEvent event) {
+		protected void onOpenButton(ActionEvent e) {
 			OpenTournamentDialog openDialog = new OpenTournamentDialog(tr.findTournaments());
 
 			Optional<String> tournamentToLoad = openDialog.showAndWait();
@@ -295,8 +295,8 @@ public class App extends Application {
 				if(tournamentToLoad.isPresent()) {
 					tournament = tr.tournamentRead(tournamentToLoad.get());
 				}
-			} catch (IOException e) {
-				e.printStackTrace();
+			} catch (IOException ex) {
+				ex.printStackTrace();
 			}
 			
 			// levelSelectCombo is disabled by default to prevent user
@@ -306,7 +306,7 @@ public class App extends Application {
 		}
 
 		@FXML
-		protected void onSaveButton(ActionEvent event) {
+		protected void onSaveButton(ActionEvent e) {
 			TextInputDialog saveDialog = new TextInputDialog();
 
 			saveDialog.setTitle("Save Tournament");
@@ -320,15 +320,14 @@ public class App extends Application {
 				TournamentWriter tw = new TournamentWriter();
 				try {
 					tw.tournamentWrite(tournament, tournamentName.get());
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				} catch (IOException ex) {
+					ex.printStackTrace();
 				}
 			}
 		}
 
 		@FXML
-		protected void onCloseButton(ActionEvent event) {
+		protected void onCloseButton(ActionEvent e) {
 			Platform.exit();
 		}
 
