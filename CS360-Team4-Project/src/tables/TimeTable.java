@@ -64,7 +64,6 @@ public class TimeTable extends Observable {
 			}
 		}
 
-
 		return String.format("%1$, .2f", max) + " miles";
 	}
 
@@ -74,12 +73,15 @@ public class TimeTable extends Observable {
 	public double[][] getData() {
 		return data;
 	}
-	
+
 	/**
-	 * Calculates and returns the average distance in miles for any level of competition.
+	 * Calculates and returns the average distance in miles for any level of
+	 * competition.
 	 * 
-	 * @param tournament The tournament.
-	 * @param level The level of competition in the tournament.
+	 * @param tournament
+	 *            The tournament.
+	 * @param level
+	 *            The level of competition in the tournament.
 	 * @return A string representation of average distance for the tournament level.
 	 */
 	public String calculateAverageLevelDriveTime(Tournament tournament, int level) {
@@ -87,23 +89,21 @@ public class TimeTable extends Observable {
 		double average = 0;
 		double sum = 0;
 		double count = 0;
-		
+
 		EventTable levelEvents = null;
-		
-		if(level == 2){
+
+		if (level == 2) {
 			levelEvents = tournament.getEvents().getSectionals();
-		}
-		else if(level == 1){
+		} else if (level == 1) {
 			levelEvents = tournament.getEvents().getRegionals();
-		}
-		else{
+		} else {
 			levelEvents = tournament.getEvents().getSemiStates();
 		}
-		
-		for(Map.Entry<Integer, Event> cursor : levelEvents.getData().entrySet()) {
+
+		for (Map.Entry<Integer, Event> cursor : levelEvents.getData().entrySet()) {
 			ArrayList<School> schools = cursor.getValue().getAttendingSchools();
 			School host = cursor.getValue().getHost();
-			
+
 			for (int j = 0; j < schools.size(); j++) {
 				sum += data[host.getId() - 1][schools.get(j).getId() - 1];
 				count++;
@@ -118,8 +118,10 @@ public class TimeTable extends Observable {
 	/**
 	 * Calculates the maximum distance in miles for any level of competition.
 	 * 
-	 * @param tournament The tournament.
-	 * @param level The level of competition in the tournament.
+	 * @param tournament
+	 *            The tournament.
+	 * @param level
+	 *            The level of competition in the tournament.
 	 * @return A string representation of max distance for the tournament level.
 	 */
 	public String calculateMaxLevelDriveTime(Tournament tournament, int level) {
@@ -128,21 +130,19 @@ public class TimeTable extends Observable {
 		double current;
 
 		EventTable levelEvents = null;
-		
-		if(level == 2){
+
+		if (level == 2) {
 			levelEvents = tournament.getEvents().getSectionals();
-		}
-		else if(level == 1){
+		} else if (level == 1) {
 			levelEvents = tournament.getEvents().getRegionals();
-		}
-		else{
+		} else {
 			levelEvents = tournament.getEvents().getSemiStates();
 		}
-		
-		for(Map.Entry<Integer, Event> cursor : levelEvents.getData().entrySet()) {
+
+		for (Map.Entry<Integer, Event> cursor : levelEvents.getData().entrySet()) {
 			ArrayList<School> schools = cursor.getValue().getAttendingSchools();
 			School host = cursor.getValue().getHost();
-			
+
 			for (int j = 0; j < schools.size(); j++) {
 				current = data[host.getId() - 1][schools.get(j).getId() - 1];
 				if (current > max) {

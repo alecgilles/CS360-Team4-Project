@@ -159,7 +159,7 @@ public class App extends Application {
 							MarkerImageFactory.createMarkerImage("/view/img/school_icon_red.png", "png")
 									.replace("(", "").replace(")", ""));
 					removeSchoolMarkers();
-					eventInfoPane.setVisible(false);
+
 					if (openInfoWindow != null) {
 						openInfoWindow.close();
 					}
@@ -215,7 +215,10 @@ public class App extends Application {
 					}
 
 					InfoWindow schoolInfo = new InfoWindow();
-					schoolInfo.setContent(event.getEventTypeAsString() + ": " + event.getHost().getName());
+					schoolInfo.setContent(event.getEventTypeAsString() + ": " + event.getHost().getName()+"<hr>Average Distance: "
+							+ tournament.getDriveTimes().calculateAverageEventDriveTime(event) + "<br>\nMax Distance: "
+							+ tournament.getDriveTimes().calculateMaxEventDriveTime(event)
+					);
 
 					schoolInfo.open(map, marker);
 					openInfoWindow = schoolInfo;

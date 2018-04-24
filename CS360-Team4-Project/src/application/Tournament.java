@@ -23,7 +23,7 @@ public class Tournament extends Observable {
 		setEvents(new EventTable());
 		setSchools(new SchoolTable());
 		setDriveTimes(new TimeTable());
-		
+
 	}
 
 	/**
@@ -40,11 +40,11 @@ public class Tournament extends Observable {
 	public static void setTournament(Tournament tournament) {
 		Tournament.tournament = tournament;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -57,7 +57,8 @@ public class Tournament extends Observable {
 	}
 
 	/**
-	 * @param events the events to set
+	 * @param events
+	 *            the events to set
 	 */
 	public void setEvents(EventTable events) {
 		this.events = events;
@@ -73,7 +74,8 @@ public class Tournament extends Observable {
 	}
 
 	/**
-	 * @param schools the schools to set
+	 * @param schools
+	 *            the schools to set
 	 */
 	public void setSchools(SchoolTable schools) {
 		this.schools = schools;
@@ -89,49 +91,53 @@ public class Tournament extends Observable {
 	}
 
 	/**
-	 * @param driveTimes the driveTimes to set
+	 * @param driveTimes
+	 *            the driveTimes to set
 	 */
 	public void setDriveTimes(TimeTable driveTimes) {
 		this.driveTimes = driveTimes;
 		setChanged();
 		notifyObservers();
 	}
-	
+
 	/**
-	 * @param newHost The school that is now willing to host events.
+	 * @param newHost
+	 *            The school that is now willing to host events.
 	 */
-	public void addWillingHost(School school){
+	public void addWillingHost(School school) {
 		school.setWillingHost(true);
 	}
-	
+
 	/**
-	 * @param newHost The school that is now willing to host events.
+	 * @param newHost
+	 *            The school that is now willing to host events.
 	 */
-	public void removeWillingHost(School school){
+	public void removeWillingHost(School school) {
 		school.setWillingHost(false);
 	}
-	
+
 	/**
 	 * 
-	 * @param school The school that is moving sectionals.
-	 * @param newSectional The new sectional for the school.
+	 * @param school
+	 *            The school that is moving sectionals.
+	 * @param newSectional
+	 *            The new sectional for the school.
 	 */
-	public void switchSchoolToSectional(School school, Sectional newSectional){
-		//find the current sectional and remove the school from its list of schools
+	public void switchSchoolToSectional(School school, Sectional newSectional) {
+		// find the current sectional and remove the school from its list of schools
 		events.getData().forEach((id, event) -> {
-			if (event instanceof Sectional){
+			if (event instanceof Sectional) {
 				SchoolTable secSchools = ((Sectional) event).getSchools();
-				if (secSchools.getByKey(school.getId()).equals(school)){
-					if (event.getHost().equals(school)){
+				if (secSchools.getByKey(school.getId()).equals(school)) {
+					if (event.getHost().equals(school)) {
 						int response = JOptionPane.showConfirmDialog(null, "This school is the host of it's current"
 								+ " sectional. If this school changes sectionals, the current sectional will no"
-								+ " longer have a host. Do you really want to move this school to a new sectional?"
-								, "Move School to New Sectional", JOptionPane.YES_NO_OPTION);
-						if (response != JOptionPane.YES_OPTION){
+								+ " longer have a host. Do you really want to move this school to a new sectional?",
+								"Move School to New Sectional", JOptionPane.YES_NO_OPTION);
+						if (response != JOptionPane.YES_OPTION) {
 							JOptionPane.showMessageDialog(null, "School sectional not changed.");
 							return;
-						}
-						else{
+						} else {
 							event.setHost(null);
 						}
 					}
@@ -141,17 +147,19 @@ public class Tournament extends Observable {
 		});
 		newSectional.getSchools().add(school);
 	}
-	
+
 	/**
 	 * Change an event's host to a new school.
-	 * @param event The event that is changing hosts.
-	 * @param school The new host of event.
+	 * 
+	 * @param event
+	 *            The event that is changing hosts.
+	 * @param school
+	 *            The new host of event.
 	 */
-	public void changeEventHost(Event event, School school){
-		if(event.getWillingHostSchools().contains(school)){
+	public void changeEventHost(Event event, School school) {
+		if (event.getWillingHostSchools().contains(school)) {
 			event.setHost(school);
-		}
-		else{
+		} else {
 			JOptionPane.showMessageDialog(null, "School is not a willing host. Event host not changed.");
 			return;
 		}

@@ -33,32 +33,31 @@ public abstract class Event {
 	public School getHost() {
 		return host;
 	}
-	
+
 	/**
 	 * 
 	 * @return The list of schools that attend the event.
 	 */
 	public abstract ArrayList<School> getAttendingSchools();
-	
+
 	/**
 	 * 
 	 * @return The list of schools in the event that are willing to host.
 	 */
-	public ArrayList<School> getWillingHostSchools(){
+	public ArrayList<School> getWillingHostSchools() {
 		ArrayList<School> willingHosts = getAttendingSchools();
 		int i = 0;
-		while(i < willingHosts.size()){
-			if(willingHosts.get(i).getWillingHost()){
+		while (i < willingHosts.size()) {
+			if (willingHosts.get(i).getWillingHost()) {
 				i++;
-			}
-			else{
+			} else {
 				willingHosts.remove(i);
 			}
 		}
-		
+
 		return willingHosts;
 	}
-	
+
 	public abstract String getEventTypeAsString();
 
 	@Override
