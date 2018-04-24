@@ -26,16 +26,21 @@
           <Menu text="_File">
             <items>
                   <MenuItem onAction="#onOpenButton" text="_Open" />
-              <MenuItem onAction="#onSaveButton" text="_Save" />
+              <MenuItem fx:id="saveButton" disable="true" onAction="#onSaveButton" text="_Save" />
                   <SeparatorMenuItem mnemonicParsing="false" />
               <MenuItem onAction="#onCloseButton" text="E_xit" />
             </items>
           </Menu>
+            <Menu text="_Edit">
+              <items>
+                <MenuItem fx:id="editSchoolsButton" disable="true" onAction="#onEditSchoolsButton" text="Edit _Schools" />
+              </items>
+            </Menu>
         </menus>
       </MenuBar>
    </top>
    <center>
-      <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane fx:id="mapTablePane" disable="true" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
           <Tab closable="false" text="Table">
             <content>

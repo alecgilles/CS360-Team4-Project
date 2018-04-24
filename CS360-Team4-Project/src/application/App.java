@@ -29,6 +29,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
@@ -89,6 +91,9 @@ public class App extends Application {
 	public class MainController implements MapComponentInitializedListener, Observer {
 
 		@FXML
+		private TabPane mapTablePane;
+		
+		@FXML
 		private ComboBox<String> levelSelectCombo;
 
 		@FXML
@@ -108,6 +113,12 @@ public class App extends Application {
 
 		@FXML
 		private GridPane eventInfoPane;
+		
+		@FXML
+		private MenuItem saveButton;
+		
+		@FXML
+		private MenuItem editSchoolsButton;
 
 		private GoogleMap map;
 		private Marker selectedMarker;
@@ -287,6 +298,13 @@ public class App extends Application {
 				}
 			});
 		}
+		
+		private void setInterfaceDisabled(boolean disable) {
+				levelSelectCombo.setDisable(disable);
+				saveButton.setDisable(disable);
+				editSchoolsButton.setDisable(disable);
+				mapTablePane.setDisable(disable);
+		}
 
 		@FXML
 		protected void onOpenButton(ActionEvent e) {
@@ -302,10 +320,7 @@ public class App extends Application {
 				ex.printStackTrace();
 			}
 
-			// levelSelectCombo is disabled by default to prevent user
-			// interaction before
-			// the tournament is loaded.
-			levelSelectCombo.setDisable(false);
+			setInterfaceDisabled(false);
 		}
 
 		@FXML
@@ -332,6 +347,12 @@ public class App extends Application {
 		@FXML
 		protected void onCloseButton(ActionEvent e) {
 			Platform.exit();
+		}
+		
+		@FXML
+		protected void onEditSchoolsButton(ActionEvent e) {
+			EditSchoolsDialog editSchoolsDialog = new EditSchoolsDialog(tournament.getSchools());
+			editSchoolsDialog.showAndWait();
 		}
 
 		@FXML
