@@ -57,7 +57,7 @@ public class App extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
-		
+
 		tournament = Tournament.getTournament();
 		// fancy new tournament reader and directory sniffer
 		tr = new TournamentReader();
@@ -191,8 +191,8 @@ public class App extends Application {
 			tierEventList.getItems().addAll(events.getData().values());
 
 			eventInfoPane.setVisible(false);
-			
-			primaryStage.setTitle(APPLICATION_TITLE+" - "+tournament.getName());
+
+			primaryStage.setTitle(APPLICATION_TITLE + " - " + tournament.getName());
 
 			MarkerOptions markerOptions = new MarkerOptions();
 
@@ -209,7 +209,7 @@ public class App extends Application {
 					Event eventToSelect = tournament.getEvents().getByKey(marker.getEventId());
 					tierEventList.getSelectionModel().select(eventToSelect);
 					tierEventList.scrollTo(eventToSelect);
-					
+
 					if (openInfoWindow != null) {
 						openInfoWindow.close();
 					}
@@ -222,6 +222,12 @@ public class App extends Application {
 				});
 				eventMarkers.put(id, marker);
 			});
+
+			eventInfoPane.setVisible(true);
+
+			avgTime.textProperty()
+					.set(tournament.getDriveTimes().calculateAverageLevelDriveTime(tournament, currentTier));
+			maxTime.textProperty().set(tournament.getDriveTimes().calculateMaxLevelDriveTime(tournament, currentTier));
 		}
 
 		private void removeEventMarkers() {
@@ -250,12 +256,6 @@ public class App extends Application {
 		}
 
 		private void onEventSelected(Event event) {
-			avgTime.textProperty().set(tournament.getDriveTimes().calculateAverageEventDriveTime(event));
-			maxTime.textProperty().set(tournament.getDriveTimes().calculateMaxEventDriveTime(event));
-
-			eventHostName.setText(event.getHost().getName());
-			eventInfoPane.setVisible(true);
-
 			MarkerOptions markerOptions = new MarkerOptions();
 			markerOptions.icon(MarkerImageFactory.createMarkerImage("/view/img/school_icon_small.png", "png")
 					.replace("(", "").replace(")", ""));
@@ -292,13 +292,13 @@ public class App extends Application {
 			Optional<String> tournamentToLoad = openDialog.showAndWait();
 
 			try {
-				if(tournamentToLoad.isPresent()) {
+				if (tournamentToLoad.isPresent()) {
 					tournament = tr.tournamentRead(tournamentToLoad.get());
 				}
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
-			
+
 			// levelSelectCombo is disabled by default to prevent user
 			// interaction before
 			// the tournament is loaded.

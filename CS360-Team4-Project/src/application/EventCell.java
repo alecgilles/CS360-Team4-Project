@@ -1,8 +1,7 @@
 package application;
 
-import java.io.IOException;
-
 import events.Event;
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -65,10 +64,12 @@ public class EventCell extends ListCell<Event> {
 
 		public void setEvent(Event event) {
 			this.event = event;
-			hostSchoolName.setText(event.getHost().getName()+": Average Distance: "+tournament.getDriveTimes().calculateAverageDriveTime(event)+" - Max Distance: "+tournament.getDriveTimes().calculateMaxDriveTime(event));
+			hostSchoolName.setText(event.getHost().getName() + ": Average Distance: "
+					+ tournament.getDriveTimes().calculateAverageEventDriveTime(event) + " - Max Distance: "
+					+ tournament.getDriveTimes().calculateMaxEventDriveTime(event));
 			attendingSchools.setText(event.getAttendingSchoolsAsString());
 		}
-		
+
 		@FXML
 		protected void onEditButton(ActionEvent e) {
 			System.out.println(event);

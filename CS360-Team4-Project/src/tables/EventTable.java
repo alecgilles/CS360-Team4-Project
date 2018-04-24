@@ -7,7 +7,7 @@ import events.SemiState;
 import java.util.HashMap;
 import java.util.Observable;
 
-public class EventTable extends Observable{
+public class EventTable extends Observable {
 
 	private HashMap<Integer, Event> data;
 

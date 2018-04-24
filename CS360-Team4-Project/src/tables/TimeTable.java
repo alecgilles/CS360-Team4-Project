@@ -5,6 +5,7 @@ import application.Tournament;
 import events.Event;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Observable;
 
 public class TimeTable extends Observable {
@@ -81,7 +82,7 @@ public class TimeTable extends Observable {
 	 * @param level The level of competition in the tournament.
 	 * @return A string representation of average distance for the tournament level.
 	 */
-	public String calculateAverageLevelDriveTime(Tournament tournament, String level) {
+	public String calculateAverageLevelDriveTime(Tournament tournament, int level) {
 
 		double average = 0;
 		double sum = 0;
@@ -89,22 +90,22 @@ public class TimeTable extends Observable {
 		
 		EventTable levelEvents = null;
 		
-		if(level.equals("Sectional")){
+		if(level == 2){
 			levelEvents = tournament.getEvents().getSectionals();
 		}
-		else if(level.equals("Regional")){
+		else if(level == 1){
 			levelEvents = tournament.getEvents().getRegionals();
 		}
 		else{
 			levelEvents = tournament.getEvents().getSemiStates();
 		}
 		
-		for (int i = 0; i < levelEvents.size(); i++){
-			ArrayList<School> schools = levelEvents.getByKey(i).getAttendingSchools();
-			School host = levelEvents.getByKey(i).getHost();
+		for(Map.Entry<Integer, Event> cursor : levelEvents.getData().entrySet()) {
+			ArrayList<School> schools = cursor.getValue().getAttendingSchools();
+			School host = cursor.getValue().getHost();
 			
 			for (int j = 0; j < schools.size(); j++) {
-				sum += data[host.getId() - 1][schools.get(i).getId() - 1];
+				sum += data[host.getId() - 1][schools.get(j).getId() - 1];
 				count++;
 			}
 		}
@@ -121,35 +122,34 @@ public class TimeTable extends Observable {
 	 * @param level The level of competition in the tournament.
 	 * @return A string representation of max distance for the tournament level.
 	 */
-	public String calculateMaxLevelDriveTime(Tournament tournament, String level) {
+	public String calculateMaxLevelDriveTime(Tournament tournament, int level) {
 
 		double max = 0;
 		double current;
 
 		EventTable levelEvents = null;
 		
-		if(level.equals("Sectional")){
+		if(level == 2){
 			levelEvents = tournament.getEvents().getSectionals();
 		}
-		else if(level.equals("Regional")){
+		else if(level == 1){
 			levelEvents = tournament.getEvents().getRegionals();
 		}
 		else{
 			levelEvents = tournament.getEvents().getSemiStates();
 		}
 		
-		for(int i = 0; i < levelEvents.size(); i++){
-			ArrayList<School> schools = levelEvents.getByKey(i).getAttendingSchools();
-			School host = levelEvents.getByKey(i).getHost();
+		for(Map.Entry<Integer, Event> cursor : levelEvents.getData().entrySet()) {
+			ArrayList<School> schools = cursor.getValue().getAttendingSchools();
+			School host = cursor.getValue().getHost();
 			
 			for (int j = 0; j < schools.size(); j++) {
-				current = data[host.getId() - 1][schools.get(i).getId() - 1];
+				current = data[host.getId() - 1][schools.get(j).getId() - 1];
 				if (current > max) {
 					max = current;
 				}
 			}
 		}
-
 
 		return String.format("%1$, .2f", max) + " miles";
 	}
