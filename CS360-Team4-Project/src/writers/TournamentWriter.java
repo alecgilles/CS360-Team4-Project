@@ -56,7 +56,6 @@ public class TournamentWriter {
 			// System.out.println("Folder created : " + dir.getName());
 		} else {
 			System.out.println("Folder exists: " + outFile.getParent());
-			return false;
 		}
 
 		// add csv files to directory
@@ -82,16 +81,9 @@ public class TournamentWriter {
 		if (parent.exists()) {
 			File t = new File(parent, name);
 
-			// check if file within folder shares the new files name
-			if (t.exists()) {
-				System.out.println("File exists: " + name);
-				return false;
-
-			} else {
-				// create new file and write in csv content
-				t.createNewFile();
-				writer(t, content);
-			}
+			// create new file and write in csv content
+			t.createNewFile();
+			writer(t, content);
 		} else {
 			System.out.println("No directory " + parent.getName());
 			return false;
@@ -107,7 +99,7 @@ public class TournamentWriter {
 	 * @throws IOException
 	 */
 	private void writer(File target, String content) throws IOException {
-		FileWriter fw = new FileWriter(target);
+		FileWriter fw = new FileWriter(target, false);
 		fw.write(content);
 		fw.flush();
 		fw.close();

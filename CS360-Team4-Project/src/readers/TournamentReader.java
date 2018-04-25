@@ -46,10 +46,10 @@ public class TournamentReader {
 		File checkDir = new File(path);
 		if (checkDir.exists() && checkDir.isDirectory()) {
 			tournament.setName(name);
-			
+
 			allSchools = schoolRead(path + "Schools.csv", allSchools);
 			tournament.setSchools(allSchools);
-			
+
 			// check in data>name for Sec, Reg, Semi csv files
 			allEvents = sectionalRead(path + "Sectionals.csv", allSchools, allEvents);
 			allEvents = regionalRead(path + "Regionals.csv", allSchools, allEvents);
@@ -82,7 +82,6 @@ public class TournamentReader {
 		return tournamentList;
 	}
 
-	
 	/**
 	 * Read in schools from a file and add them to a list of schools in the
 	 * tournament

@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ListCell;
@@ -55,10 +56,19 @@ public class EditSchoolsDialog extends Dialog<Boolean> {
 		@FXML
 		private ListView<School> schoolList;
 
+		@FXML
+		private Button editButton;
+
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
 			schoolList.setCellFactory(lv -> new SchoolCell());
 			schoolList.getItems().addAll(schools.getData().values());
+
+			schoolList.getSelectionModel().selectedItemProperty().addListener((event, oldVal, newVal) -> {
+				if (newVal != null) {
+					editButton.setDisable(false);
+				}
+			});
 		}
 
 		@FXML

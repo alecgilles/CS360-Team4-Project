@@ -13,7 +13,7 @@
    <right>
       <VBox BorderPane.alignment="TOP_LEFT">
          <children>
-            <Button onAction="#onEditButton" mnemonicParsing="false" text="Edit">
+            <Button fx:id="editButton" onAction="#onEditButton" disable="true" mnemonicParsing="false" text="Edit">
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" />
                </VBox.margin>
