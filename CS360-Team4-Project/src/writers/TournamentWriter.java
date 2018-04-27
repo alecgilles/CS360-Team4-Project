@@ -54,8 +54,6 @@ public class TournamentWriter {
 		if (!dir.exists()) {
 			dir.mkdir();
 			// System.out.println("Folder created : " + dir.getName());
-		} else {
-			System.out.println("Folder exists: " + outFile.getParent());
 		}
 
 		// add csv files to directory
