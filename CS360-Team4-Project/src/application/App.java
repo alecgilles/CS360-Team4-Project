@@ -312,7 +312,7 @@ public class App extends Application {
 
 		@FXML
 		protected void onOpenButton(ActionEvent e) {
-			OpenTournamentDialog openDialog = new OpenTournamentDialog(tr.findTournaments());
+			OpenTournamentDialog openDialog = new OpenTournamentDialog();
 
 			Optional<String> tournamentToLoad = openDialog.showAndWait();
 

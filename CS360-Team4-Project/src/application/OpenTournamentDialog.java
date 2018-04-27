@@ -1,7 +1,9 @@
 package application;
 
-import java.util.ArrayList;
+import java.util.Optional;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
@@ -16,8 +18,11 @@ import readers.TournamentReader;
 
 public class OpenTournamentDialog extends Dialog<String> {
 	private static final String DIALOG_TITLE = "Open Tournament";
+	
+	private TournamentReader tr = new TournamentReader();
+	private ListView<String> tournamentList;
 
-	public OpenTournamentDialog(ArrayList<String> options) {
+	public OpenTournamentDialog() {
 		this.setTitle(DIALOG_TITLE);
 		this.setHeaderText(null);
 		this.setGraphic(null);
@@ -31,9 +36,9 @@ public class OpenTournamentDialog extends Dialog<String> {
 		GridPane pane = new GridPane();
 		pane.setPadding(new Insets(5, 5, 5, 5));
 
-		ListView<String> tournamentList = new ListView<String>();
+		tournamentList = new ListView<String>();
 		tournamentList.setCellFactory(lv -> new TournamentCell());
-		tournamentList.getItems().addAll(options);
+		tournamentList.getItems().addAll(tr.findTournaments());
 		pane.add(tournamentList, 0, 0);
 
 		this.getDialogPane().setContent(pane);
@@ -69,7 +74,6 @@ public class OpenTournamentDialog extends Dialog<String> {
 		@Override
 		protected void updateItem(String value, boolean isEmpty) {
 			super.updateItem(value, isEmpty);
-			TournamentReader tr = new TournamentReader();
 			if (isEmpty) {
 				setGraphic(null);
 			} else {
@@ -80,7 +84,17 @@ public class OpenTournamentDialog extends Dialog<String> {
 				
 				Button deleteButton = new Button("Delete");
 				deleteButton.setOnAction( event -> {
-					tr.deleteTournament(value);
+					Alert deleteConfirmation = new Alert(AlertType.CONFIRMATION);
+					deleteConfirmation.setTitle("Delete "+value+"?");
+					deleteConfirmation.setHeaderText("Are you sure you want to delete tournament \""+value+"\"?");
+					deleteConfirmation.setContentText("This operation cannot be undone.");
+					
+					Optional<ButtonType> result = deleteConfirmation.showAndWait();
+					
+					if(result.get() == ButtonType.OK) {
+						tr.deleteTournament(value);
+						tournamentList.getItems().remove(value);
+					}
 				});
 				itemRoot.setRight(deleteButton);
 
