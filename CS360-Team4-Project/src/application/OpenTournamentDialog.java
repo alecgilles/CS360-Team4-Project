@@ -6,9 +6,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
 public class OpenTournamentDialog extends Dialog<String> {
 	private static final String DIALOG_TITLE = "Open Tournament";
@@ -28,12 +31,13 @@ public class OpenTournamentDialog extends Dialog<String> {
 		pane.setPadding(new Insets(5, 5, 5, 5));
 
 		ListView<String> tournamentList = new ListView<String>();
+		tournamentList.setCellFactory(lv -> new TournamentCell());
 		tournamentList.getItems().addAll(options);
 		pane.add(tournamentList, 0, 0);
 
 		this.getDialogPane().setContent(pane);
 
-		tournamentList.getSelectionModel().selectedIndexProperty().addListener((event, oldVal, newVal) -> {
+		tournamentList.getSelectionModel().selectedItemProperty().addListener((event, oldVal, newVal) -> {
 			if (newVal != null) {
 				openButton.setDisable(false);
 			}
@@ -57,5 +61,29 @@ public class OpenTournamentDialog extends Dialog<String> {
 
 			return null;
 		});
+	}
+	
+	private class TournamentCell extends ListCell<String> {
+
+		@Override
+		protected void updateItem(String value, boolean isEmpty) {
+			super.updateItem(value, isEmpty);
+			if (isEmpty) {
+				setGraphic(null);
+			} else {
+				BorderPane itemRoot = new BorderPane();
+				
+				Text name = new Text(value);
+				itemRoot.setLeft(name);
+				
+				Button deleteButton = new Button("Delete");
+				deleteButton.setOnAction( event -> {
+					//tournamentWriter.delete(value);
+				});
+				itemRoot.setRight(deleteButton);
+
+				setGraphic(itemRoot);
+			}
+		}
 	}
 }
