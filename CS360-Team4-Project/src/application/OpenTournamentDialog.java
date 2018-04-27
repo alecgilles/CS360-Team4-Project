@@ -12,6 +12,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import readers.TournamentReader;
 
 public class OpenTournamentDialog extends Dialog<String> {
 	private static final String DIALOG_TITLE = "Open Tournament";
@@ -68,6 +69,7 @@ public class OpenTournamentDialog extends Dialog<String> {
 		@Override
 		protected void updateItem(String value, boolean isEmpty) {
 			super.updateItem(value, isEmpty);
+			TournamentReader tr = new TournamentReader();
 			if (isEmpty) {
 				setGraphic(null);
 			} else {
@@ -78,7 +80,7 @@ public class OpenTournamentDialog extends Dialog<String> {
 				
 				Button deleteButton = new Button("Delete");
 				deleteButton.setOnAction( event -> {
-					//tournamentWriter.delete(value);
+					tr.deleteTournament(value);
 				});
 				itemRoot.setRight(deleteButton);
 

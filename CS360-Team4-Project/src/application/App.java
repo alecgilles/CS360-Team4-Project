@@ -360,7 +360,6 @@ public class App extends Application {
 
 		@FXML
 		protected void onCloseButton(ActionEvent e) {
-			//tr.deleteTournament("");
 			Platform.exit();
 		}
 		
