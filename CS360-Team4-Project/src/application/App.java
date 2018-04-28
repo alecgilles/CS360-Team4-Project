@@ -97,9 +97,6 @@ public class App extends Application {
 		private ComboBox<String> levelSelectCombo;
 
 		@FXML
-		private ComboBox<School> curEventHost;
-
-		@FXML
 		private ListView<Event> tierEventList;
 
 		@FXML
@@ -167,7 +164,6 @@ public class App extends Application {
 			tierEventList.getSelectionModel().selectedItemProperty().addListener((event, oldVal, newVal) -> {
 				if (newVal != null) {
 					onEventClick((EventMarker) eventMarkers.get(newVal.getId()));
-					curEventHost.getSelectionModel().select(newVal.getHost());
 				}
 			});
 
@@ -188,6 +184,8 @@ public class App extends Application {
 
 		@Override
 		public void update(Observable object, Object arg) {
+			Event currentlySelected = tierEventList.getSelectionModel().getSelectedItem();
+			
 			EventTable events = null;
 			int currentTier = levelSelectCombo.getSelectionModel().getSelectedIndex();
 
@@ -244,8 +242,11 @@ public class App extends Application {
 				eventMarkers.put(id, marker);
 			});
 
+			if(currentlySelected != null && tierEventList.getItems().contains(currentlySelected)) {
+				tierEventList.getSelectionModel().select(currentlySelected);
+			}
+			
 			eventInfoPane.setVisible(true);
-
 			avgTime.textProperty()
 					.set(tournament.getDriveTimes().calculateAverageLevelDriveTime(tournament, currentTier));
 			maxTime.textProperty().set(tournament.getDriveTimes().calculateMaxLevelDriveTime(tournament, currentTier));
@@ -277,10 +278,6 @@ public class App extends Application {
 		}
 
 		private void onEventSelected(Event event) {
-			curEventHost.getItems().clear();
-			curEventHost.getItems().addAll(event.getWillingHostSchools().getData().values());
-			curEventHost.getSelectionModel().select(event.getHost());
-
 			MarkerOptions markerOptions = new MarkerOptions();
 			markerOptions.icon(MarkerImageFactory.createMarkerImage("/view/img/school_icon_small.png", "png")
 					.replace("(", "").replace(")", ""));
@@ -317,7 +314,6 @@ public class App extends Application {
 				saveAsButton.setDisable(disable);
 				editSchoolsButton.setDisable(disable);
 				mapTablePane.setDisable(disable);
-				curEventHost.setDisable(disable);
 		}
 
 		@FXML
@@ -381,30 +377,7 @@ public class App extends Application {
 
 		@FXML
 		protected void onLevelSelect(ActionEvent e) {
-			curEventHost.getItems().clear();
 			update(null, null);
-		}
-
-		@FXML
-		protected void onHostSelect(ActionEvent e) {
-			Event event = tierEventList.getSelectionModel().getSelectedItem();
-			School newHost = curEventHost.getSelectionModel().getSelectedItem();
-			int level = levelSelectCombo.getSelectionModel().getSelectedIndex();
-			tournament.changeEventHost(event, newHost);
-			update(null, null);
-			openInfoWindow.close();
-			
-			School host = event.getHost();
-			MarkerOptions markerOptions = new MarkerOptions();
-			markerOptions.position(new LatLong(host.getLat(), host.getLon()));
-			markerOptions.title(host.getName());
-			EventMarker marker = new EventMarker(event.getId(), markerOptions);
-						
-			onEventClick(marker);
-			//onEventSelected(event);
-			avgTime.textProperty().set(tournament.getDriveTimes().calculateAverageLevelDriveTime(tournament, level));
-			maxTime.textProperty().set(tournament.getDriveTimes().calculateMaxLevelDriveTime(tournament, level));
-			
 		}
 	}
 }

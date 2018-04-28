@@ -112,8 +112,6 @@
                   </HBox>
                </children>
             </GridPane>
-            <ComboBox fx:id="curEventHost" disable="true" layoutX="49.0" layoutY="107.0" onAction="#onHostSelect" prefHeight="30.0" promptText="Current Event Host" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="130.0" />
-            <Text layoutX="14.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Possible Event Hosts:" />
          </children>
       </AnchorPane>
    </left>

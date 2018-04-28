@@ -157,8 +157,10 @@ public class Tournament extends Observable {
 	 *            The new host of event.
 	 */
 	public void changeEventHost(Event event, School school) {
-		if (event.getWillingHostSchools().getByKey(school.getId()) != null) {
+		if (event.getWillingHostSchools().getData().containsKey(school.getId())) {
 			event.setHost(school);
+			setChanged();
+			notifyObservers();
 		} else {
 			JOptionPane.showMessageDialog(null, "School is not a willing host. Event host not changed.");
 			return;
