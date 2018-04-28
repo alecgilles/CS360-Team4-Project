@@ -132,7 +132,7 @@ public class TournamentReader {
 				t = token.nextToken();
 				t = t.trim();
 				// set School isWillingHost
-				isWillingHost = t.matches("TRUE");
+				isWillingHost = t.matches("true");
 
 				allSchools.add(new School(name, id, address, lat, lon, isWillingHost));
 

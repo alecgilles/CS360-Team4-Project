@@ -121,6 +121,9 @@ public class App extends Application {
 		private MenuItem saveButton;
 		
 		@FXML
+		private MenuItem saveAsButton;
+		
+		@FXML
 		private MenuItem editSchoolsButton;
 
 		private GoogleMap map;
@@ -311,6 +314,7 @@ public class App extends Application {
 		private void setInterfaceDisabled(boolean disable) {
 				levelSelectCombo.setDisable(disable);
 				saveButton.setDisable(disable);
+				saveAsButton.setDisable(disable);
 				editSchoolsButton.setDisable(disable);
 				mapTablePane.setDisable(disable);
 				curEventHost.setDisable(disable);
@@ -318,19 +322,18 @@ public class App extends Application {
 
 		@FXML
 		protected void onOpenButton(ActionEvent e) {
-			OpenTournamentDialog openDialog = new OpenTournamentDialog(tr.findTournaments());
+			OpenTournamentDialog openDialog = new OpenTournamentDialog();
 
 			Optional<String> tournamentToLoad = openDialog.showAndWait();
 
 			try {
 				if (tournamentToLoad.isPresent()) {
 					tournament = tr.tournamentRead(tournamentToLoad.get());
+					setInterfaceDisabled(false);
 				}
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
-
-			setInterfaceDisabled(false);
 		}
 
 		@FXML
