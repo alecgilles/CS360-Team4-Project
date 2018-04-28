@@ -46,10 +46,10 @@ public class TournamentReader {
 		File checkDir = new File(path);
 		if (checkDir.exists() && checkDir.isDirectory()) {
 			tournament.setName(name);
-			
+
 			allSchools = schoolRead(path + "Schools.csv", allSchools);
 			tournament.setSchools(allSchools);
-			
+
 			// check in data>name for Sec, Reg, Semi csv files
 			allEvents = sectionalRead(path + "Sectionals.csv", allSchools, allEvents);
 			allEvents = regionalRead(path + "Regionals.csv", allSchools, allEvents);
@@ -82,7 +82,34 @@ public class TournamentReader {
 		return tournamentList;
 	}
 
-	
+	/**
+	 * 
+	 * @param folderName
+	 * @return
+	 */
+	public boolean deleteTournament(String folderName) {
+		String[] fileList = null;
+		// get the path to folderName
+		String path = DATA_PATH + folderName + "/";
+		File dir = new File(path);
+		
+		
+		// confirm folderName is directory
+		if (dir.exists() && dir.isDirectory()) {
+			fileList = dir.list();
+			
+			// delete the files folderName
+			for (int i = 0; i < fileList.length; i++) {
+				File myFile = new File(dir, fileList[i]);
+				//System.out.println("Deleted : "+fileList[i]);
+				myFile.delete();
+			}
+			System.out.println("Deleted folder: "+dir.getName());
+			return dir.delete();
+		}
+		return false;
+	}
+
 	/**
 	 * Read in schools from a file and add them to a list of schools in the
 	 * tournament
@@ -132,7 +159,7 @@ public class TournamentReader {
 				t = token.nextToken();
 				t = t.trim();
 				// set School isWillingHost
-				isWillingHost = t.matches("true");
+				isWillingHost = (t.matches("TRUE") || t.matches("true"));
 
 				allSchools.add(new School(name, id, address, lat, lon, isWillingHost));
 
