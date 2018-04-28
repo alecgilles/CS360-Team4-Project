@@ -2,6 +2,7 @@ package events;
 
 import application.School;
 import java.util.ArrayList;
+import tables.SchoolTable;
 
 public abstract class Event {
 
@@ -44,14 +45,13 @@ public abstract class Event {
 	 * 
 	 * @return The list of schools in the event that are willing to host.
 	 */
-	public ArrayList<School> getWillingHostSchools() {
-		ArrayList<School> willingHosts = getAttendingSchools();
-		int i = 0;
-		while (i < willingHosts.size()) {
-			if (willingHosts.get(i).getWillingHost()) {
-				i++;
-			} else {
-				willingHosts.remove(i);
+	public SchoolTable getWillingHostSchools() {
+		SchoolTable willingHosts = new SchoolTable();
+		ArrayList<School> attendingSchools = getAttendingSchools();
+		
+		for (int i = 0; i < attendingSchools.size(); i++){
+			if (attendingSchools.get(i).getWillingHost()) {
+				willingHosts.add(attendingSchools.get(i));
 			}
 		}
 

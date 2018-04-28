@@ -131,13 +131,14 @@ public class School {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("School [");
-		builder.append(name);
-		builder.append(",  id: ");
-		builder.append(id);
-		builder.append("]\n");
-		return builder.toString();
+		//StringBuilder builder = new StringBuilder();
+		//builder.append("School [");
+		//builder.append(name);
+		//builder.append(",  id: ");
+		//builder.append(id);
+		//builder.append("]\n");
+		//return builder.toString();
+		return this.name;
 	}
 	
 	public boolean equals(School school){

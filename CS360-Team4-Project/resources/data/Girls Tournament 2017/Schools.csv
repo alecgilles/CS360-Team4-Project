@@ -76,8 +76,8 @@ West Lafayette,74,1105 Grant St,West Lafayette,IN,47906,40.48583,-86.98514,FALSE
 Western Boone,75,1205 IN-75,Thorntown,IN,46071,40.0574,-86.61957084,FALSE
 Argos,76,500 Yearick St,Argos,IN,46501,41.22435,-86.24921,FALSE
 Caston,77,9815 IN-25,Rochester,IN,46975,40.91212168,-86.28337017,FALSE
-Culver Academies,78,1300 Academy Rd,Culver,IN,46511,41.21879,-86.42866,FALSE
-Culver Community,79,701 School St,Culver,IN,46511,41.21879,-86.42866,TRUE
+Culver Academies,78,1300 Academy Rd,Culver,IN,46511,41.21879,-86.42866,TRUE
+Culver Community,79,701 School St,Culver,IN,46511,41.21879,-86.42866,FALSE
 Manchester,80,1 Squire Drive,Manchester,IN,46962,40.98382,-85.76482,FALSE
 North Miami,81,570 East 900 North,Denver,"IN,",46926,40.95026,FALSE,FALSE
 Plymouth,82,1 Big Red Dr,Plymouth,IN,46563,41.35555,-86.32591,FALSE
@@ -154,7 +154,7 @@ Fort Wayne Canterbury,152,3210 Smith Rd,Fort Wayne,IN,46804,41.05229,-85.24136,F
 Fort Wayne South Side,153,3601 S Calhoun St,Fort Wayne,IN,46807,41.04489,-85.14798,FALSE
 Fort Wayne Wayne,154,9100 Winchester Rd,Fort Wayne,IN,46819,40.96523,-85.13419,FALSE
 Heritage,155,13608 Monroeville Rd,Monroeville,IN,46773,40.98028,-84.8763,FALSE
-New Haven,156,1300 Green Rd,New Haven,IN,46774,41.09168,-84.9669,FALSE
+New Haven,156,1300 Green Rd,New Haven,IN,46774,41.09168,-84.9669,TRUE
 Norwell,157,1100 US-224,Ossian,IN,46777,40.82981287,-85.20292425,FALSE
 Smith Academy for Excellence,158,725 W Washington Blvd,Fort Wayne,IN,46802,41.06784,-85.16274,FALSE
 South Adams,159,1000 Parkway St,Berne,IN,46711,40.66418,-84.92422,FALSE
@@ -265,7 +265,7 @@ Knightstown,263,8139 US-40,Knightstown,IN,46148,39.79392557,-85.54086892,FALSE
 New Castle,264,801 Parkview Dr,New Castle,IN,47362,39.93277,-85.3663,FALSE
 Northeastern,265,7295 US-27,Fountain City,IN,47341,39.93474992,-84.91364764,FALSE
 Richmond,266,380 Hub Etchison Pkwy,Richmond,IN,47374,39.83541,-84.89013,FALSE
-Rushville Consolidated,267,1201 Lions Path,Rushville,IN,46173,39.60307,-85.43158,FALSE
+Rushville Consolidated,267,1201 Lions Path,Rushville,IN,46173,39.60307,-85.43158,TRUE
 Seton Catholic,268,233 S 5th St,Richmond,IN,47374,39.82523842,-84.89552048,FALSE
 Tri,269,6972 IN-103,Straughn,IN,47387,39.83152728,-85.35273078,FALSE
 Union County,270,410 Patriot Blvd,Liberty,IN,47353,39.62453,-84.91541,FALSE
@@ -289,7 +289,7 @@ Greenwood Christian Academy,287,835 West Worthsville Road,Greenwood,IN,46143,39.
 Monrovia,288,205 S Chestnut St,Monrovia,IN,46157,39.55832,-86.52623,FALSE
 Mooresville,289,550 N Indiana St,Mooresville,IN,46158,39.58565,-86.3739,FALSE
 Perry Meridian,290,401 W Meridian School Rd,Indianapolis,IN,46217,39.6733,-86.19334,FALSE
-Shelbyville,291,2003 S Miller St,Shelbyville,IN,46176,39.52603,-85.77551,FALSE
+Shelbyville,291,2003 S Miller St,Shelbyville,IN,46176,39.52603,-85.77551,TRUE
 Southport,292,971 E Banta Rd,Indianapolis,IN,46227,39.67631,-86.13144,FALSE
 Waldron,293,East St,Waldron,IN,46182,39.45874,-85.67207,FALSE
 Whiteland Community,294,300 E Main St,Whiteland,IN,46184,39.56026,-86.07232,FALSE
@@ -372,7 +372,7 @@ Barr-Reeve,370,298 3rd St,Montgomery,IN,47558,38.64123,-87.04527,FALSE
 Gibson Southern,371,3499 W 800 S,Fort Branch,IN,47648,38.23808434,-87.63426046,FALSE
 North Daviess,372,5494 E State Rd 58,Elnora,IN,47529,38.84533713,-87.06025,FALSE
 North Knox,373,10890 State Hwy 159,Bicknell,IN,47512,38.83561142,-87.31563148,FALSE
-Pike Central,374,1810 IN-56,Petersburg,IN,47567,38.43617448,-87.24450417,FALSE
+Pike Central,374,1810 IN-56,Petersburg,IN,47567,38.43617448,-87.24450417,TRUE
 Princeton Community,375,1101 N Main St,Princeton,IN,47670,38.33961,-87.57074,FALSE
 South Knox,376,6116 IN-61,Vincennes,IN,47591,38.63533602,-87.42377118,TRUE
 Tecumseh,377,5244 IN-68,Lynnville,IN,47619,38.19341128,-87.34134247,FALSE
