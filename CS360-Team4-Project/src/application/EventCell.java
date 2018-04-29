@@ -72,8 +72,7 @@ public class EventCell extends ListCell<Event> {
 
 		@FXML
 		protected void onEditButton(ActionEvent e) {
-			EditEventDialog editDialog = new EditEventDialog(event);
-			editDialog.showAndWait();
+			new EditEventDialog(event).showAndWait();
 		}
 	}
 }

@@ -23,15 +23,19 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
+import javafx.geometry.Side;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
@@ -128,6 +132,7 @@ public class App extends Application {
 		private HashMap<Integer, Marker> eventMarkers;
 		private ArrayList<Marker> schoolMarkers;
 		private InfoWindow openInfoWindow;
+		private ContextMenu openContextMenu;
 
 		public void initialize() {
 			levelSelectCombo.getItems().setAll(EVENT_LEVELS);
@@ -177,7 +182,18 @@ public class App extends Application {
 					if (openInfoWindow != null) {
 						openInfoWindow.close();
 					}
+
+					if (openContextMenu != null) {
+						openContextMenu.hide();
+					}
+
 					tierEventList.getSelectionModel().clearSelection();
+				}
+			});
+
+			mapView.setOnMouseClicked(event -> {
+				if (event.getButton() != MouseButton.SECONDARY && openContextMenu != null) {
+					openContextMenu.hide();
 				}
 			});
 		}
@@ -239,6 +255,32 @@ public class App extends Application {
 					schoolInfo.open(map, marker);
 					openInfoWindow = schoolInfo;
 				});
+
+				map.addUIEventHandler(marker, UIEventType.rightclick, (m) -> {
+					ContextMenu markerContextMenu = new ContextMenu();
+
+					MenuItem editEvent = new MenuItem("Edit Event");
+					editEvent.setOnAction(e -> {
+						new EditEventDialog(event).showAndWait();
+					});
+
+					MenuItem editSchool = new MenuItem("Edit School");
+					editSchool.setOnAction(e -> {
+						new EditSchoolDialog(event.getHost(), tournament).showAndWait();
+					});
+
+					markerContextMenu.getItems().addAll(editEvent, editSchool);
+
+					Point2D scrSpacePos = map
+							.fromLatLngToPoint(new LatLong(event.getHost().getLat(), event.getHost().getLon()));
+
+					if (openContextMenu != null) {
+						openContextMenu.hide();
+					}
+					markerContextMenu.show(mapView, Side.LEFT, scrSpacePos.getX(), scrSpacePos.getY());
+					openContextMenu = markerContextMenu;
+				});
+
 				eventMarkers.put(id, marker);
 			});
 
@@ -299,6 +341,25 @@ public class App extends Application {
 
 						schoolInfo.open(map, marker);
 						openInfoWindow = schoolInfo;
+					});
+
+					map.addUIEventHandler(marker, UIEventType.rightclick, (m) -> {
+						ContextMenu markerContextMenu = new ContextMenu();
+
+						MenuItem editSchool = new MenuItem("Edit School");
+						editSchool.setOnAction(e -> {
+							new EditSchoolDialog(school, tournament).showAndWait();
+						});
+
+						markerContextMenu.getItems().addAll(editSchool);
+
+						Point2D scrSpacePos = map.fromLatLngToPoint(new LatLong(school.getLat(), school.getLon()));
+
+						if (openContextMenu != null) {
+							openContextMenu.hide();
+						}
+						markerContextMenu.show(mapView, Side.LEFT, scrSpacePos.getX(), scrSpacePos.getY());
+						openContextMenu = markerContextMenu;
 					});
 
 					map.addMarker(marker);
