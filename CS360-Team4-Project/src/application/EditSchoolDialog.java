@@ -2,12 +2,11 @@ package application;
 
 import events.Event;
 import events.Sectional;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ReadOnlyObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -21,7 +20,7 @@ import tables.SchoolTable;
 public class EditSchoolDialog extends Dialog<Boolean> {
 	private BooleanProperty isWillingToHost;
 	private School school;
-	private Sectional sectional;
+	private ReadOnlyObjectProperty<Event> sectional;
 	private Tournament tournament;
 
 	public EditSchoolDialog(School school, Tournament tournament) {
@@ -47,7 +46,7 @@ public class EditSchoolDialog extends Dialog<Boolean> {
 		this.setResultConverter(dialogButton -> {
 			if (dialogButton == ButtonType.OK) {
 				school.setWillingHost(isWillingToHost.get());
-				tournament.switchSchoolToSectional(school, sectional);
+				tournament.switchSchoolToSectional(school, (Sectional) sectional.get());
 				return true;
 			}
 
@@ -60,24 +59,24 @@ public class EditSchoolDialog extends Dialog<Boolean> {
 		CheckBox willingToHost;
 		@FXML
 		ComboBox<Event> curSectional;
-		
+
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
 			willingToHost.setSelected(school.getWillingHost());
 			isWillingToHost = willingToHost.selectedProperty();
+
 			curSectional.getItems().clear();
 			curSectional.getItems().addAll(tournament.getEvents().getSectionals().getData().values());
+
 			// find the current sectional and select it as default
-			tournament.getEvents().getData().forEach((id, event) -> {
-				if (event instanceof Sectional) {
-					SchoolTable secSchools = ((Sectional) event).getSchools();
-					if (secSchools.getByKey(school.getId()).equals(school)) {
-						curSectional.getSelectionModel().select(event);
-					}
+			tournament.getEvents().getSectionals().getData().forEach((id, event) -> {
+				SchoolTable secSchools = ((Sectional) event).getSchools();
+				if (secSchools.getData().containsKey(school.getId())) {
+					curSectional.getSelectionModel().select(event);
 				}
 			});
-			sectional = (Sectional) curSectional.getSelectionModel().getSelectedItem();
-			//curSectional.getSelectionModel().select();
+
+			sectional = curSectional.getSelectionModel().selectedItemProperty();
 		}
 	}
 }

@@ -92,7 +92,7 @@ public class App extends Application {
 
 		@FXML
 		private TabPane mapTablePane;
-		
+
 		@FXML
 		private ComboBox<String> levelSelectCombo;
 
@@ -113,13 +113,13 @@ public class App extends Application {
 
 		@FXML
 		private GridPane eventInfoPane;
-		
+
 		@FXML
 		private MenuItem saveButton;
-		
+
 		@FXML
 		private MenuItem saveAsButton;
-		
+
 		@FXML
 		private MenuItem editSchoolsButton;
 
@@ -132,7 +132,7 @@ public class App extends Application {
 		public void initialize() {
 			levelSelectCombo.getItems().setAll(EVENT_LEVELS);
 			levelSelectCombo.getSelectionModel().select(0);
-			
+
 			tierEventList.setCellFactory(lv -> new EventCell(lv));
 
 			mapView.addMapInializedListener(this);
@@ -185,7 +185,7 @@ public class App extends Application {
 		@Override
 		public void update(Observable object, Object arg) {
 			Event currentlySelected = tierEventList.getSelectionModel().getSelectedItem();
-			
+
 			EventTable events = null;
 			int currentTier = levelSelectCombo.getSelectionModel().getSelectedIndex();
 
@@ -205,7 +205,7 @@ public class App extends Application {
 
 			tierEventList.getItems().clear();
 			tierEventList.getItems().addAll(events.getData().values());
-			
+
 			eventInfoPane.setVisible(false);
 
 			primaryStage.setTitle(APPLICATION_TITLE + " - " + tournament.getName());
@@ -231,10 +231,10 @@ public class App extends Application {
 					}
 
 					InfoWindow schoolInfo = new InfoWindow();
-					schoolInfo.setContent(event.getEventTypeAsString() + ": " + event.getHost().getName()+"<hr>Average Distance: "
+					schoolInfo.setContent(event.getEventTypeAsString() + ": " + event.getHost().getName()
+							+ "<hr>Average Distance: "
 							+ tournament.getDriveTimes().calculateAverageEventDriveTime(event) + "<br>\nMax Distance: "
-							+ tournament.getDriveTimes().calculateMaxEventDriveTime(event)
-					);
+							+ tournament.getDriveTimes().calculateMaxEventDriveTime(event));
 
 					schoolInfo.open(map, marker);
 					openInfoWindow = schoolInfo;
@@ -242,10 +242,10 @@ public class App extends Application {
 				eventMarkers.put(id, marker);
 			});
 
-			if(currentlySelected != null && tierEventList.getItems().contains(currentlySelected)) {
+			if (currentlySelected != null && tierEventList.getItems().contains(currentlySelected)) {
 				tierEventList.getSelectionModel().select(currentlySelected);
 			}
-			
+
 			eventInfoPane.setVisible(true);
 			avgTime.textProperty()
 					.set(tournament.getDriveTimes().calculateAverageLevelDriveTime(tournament, currentTier));
@@ -305,15 +305,15 @@ public class App extends Application {
 					schoolMarkers.add(marker);
 				}
 			});
-			
+
 		}
-		
+
 		private void setInterfaceDisabled(boolean disable) {
-				levelSelectCombo.setDisable(disable);
-				saveButton.setDisable(disable);
-				saveAsButton.setDisable(disable);
-				editSchoolsButton.setDisable(disable);
-				mapTablePane.setDisable(disable);
+			levelSelectCombo.setDisable(disable);
+			saveButton.setDisable(disable);
+			saveAsButton.setDisable(disable);
+			editSchoolsButton.setDisable(disable);
+			mapTablePane.setDisable(disable);
 		}
 
 		@FXML
@@ -341,7 +341,7 @@ public class App extends Application {
 				ex.printStackTrace();
 			}
 		}
-		
+
 		@FXML
 		protected void onSaveAsButton(ActionEvent e) {
 			TextInputDialog saveDialog = new TextInputDialog();
@@ -368,7 +368,7 @@ public class App extends Application {
 		protected void onCloseButton(ActionEvent e) {
 			Platform.exit();
 		}
-		
+
 		@FXML
 		protected void onEditSchoolsButton(ActionEvent e) {
 			EditSchoolsDialog editSchoolsDialog = new EditSchoolsDialog(tournament.getSchools(), tournament);

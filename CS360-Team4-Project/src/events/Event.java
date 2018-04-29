@@ -62,10 +62,7 @@ public abstract class Event {
 
 	@Override
 	public String toString() {
-		String retVal = "";
-		ArrayList<School> schools = getAttendingSchools();
-
-		return retVal += host.getName() + "\n" + schools.size() + " Feeder Schools: \n" + getAttendingSchoolsAsString();
+		return host.getName();
 	}
 
 	public String getAttendingSchoolsAsString() {

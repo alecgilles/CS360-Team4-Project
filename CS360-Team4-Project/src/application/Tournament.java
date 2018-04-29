@@ -125,10 +125,9 @@ public class Tournament extends Observable {
 	 */
 	public void switchSchoolToSectional(School school, Sectional newSectional) {
 		// find the current sectional and remove the school from its list of schools
-		events.getData().forEach((id, event) -> {
-			if (event instanceof Sectional) {
+		events.getSectionals().getData().forEach((id, event) -> {
 				SchoolTable secSchools = ((Sectional) event).getSchools();
-				if (secSchools.getByKey(school.getId()).equals(school)) {
+				if (secSchools.getData().containsKey(school.getId())) {
 					if (event.getHost().equals(school)) {
 						int response = JOptionPane.showConfirmDialog(null, "This school is the host of it's current"
 								+ " sectional. If this school changes sectionals, the current sectional will no"
@@ -143,9 +142,12 @@ public class Tournament extends Observable {
 					}
 					secSchools.remove(school.getId());
 				}
-			}
 		});
+
 		newSectional.getSchools().add(school);
+		
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
