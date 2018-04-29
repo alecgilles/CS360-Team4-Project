@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -12,10 +13,13 @@
     <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" minWidth="10.0" />
   </columnConstraints>
   <rowConstraints>
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <Label text="Willing to Host Event:" />
-      <CheckBox fx:id="willingToHost" mnemonicParsing="false" GridPane.columnIndex="1" />
+      <Label text="Willing to Host Event:" GridPane.rowIndex="1" />
+      <CheckBox fx:id="willingToHost" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <ComboBox fx:id="curSectional" onAction="#onHostSelect" prefHeight="30.0" GridPane.columnIndex="1" />
+      <Label text="Attends Sectional:" />
    </children>
 </GridPane>

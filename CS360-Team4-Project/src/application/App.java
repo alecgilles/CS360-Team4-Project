@@ -371,7 +371,7 @@ public class App extends Application {
 		
 		@FXML
 		protected void onEditSchoolsButton(ActionEvent e) {
-			EditSchoolsDialog editSchoolsDialog = new EditSchoolsDialog(tournament.getSchools());
+			EditSchoolsDialog editSchoolsDialog = new EditSchoolsDialog(tournament.getSchools(), tournament);
 			editSchoolsDialog.showAndWait();
 		}
 

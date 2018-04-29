@@ -21,11 +21,13 @@ public class EditSchoolsDialog extends Dialog<Boolean> {
 	private static final String DIALOG_TITLE = "Edit Schools";
 
 	private SchoolTable schools;
+	private Tournament tournament;
 
-	public EditSchoolsDialog(SchoolTable schools) {
+	public EditSchoolsDialog(SchoolTable schools, Tournament tournament) {
 		Parent root;
 
 		this.schools = schools;
+		this.tournament = tournament;
 
 		this.setTitle(DIALOG_TITLE);
 		this.setHeaderText(null);
@@ -73,7 +75,7 @@ public class EditSchoolsDialog extends Dialog<Boolean> {
 
 		@FXML
 		protected void onEditButton(ActionEvent e) {
-			new EditSchoolDialog(schoolList.getSelectionModel().getSelectedItem()).showAndWait();
+			new EditSchoolDialog(schoolList.getSelectionModel().getSelectedItem(), tournament).showAndWait();
 			schoolList.refresh();
 		}
 	}
