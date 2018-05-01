@@ -232,10 +232,15 @@ public class App extends Application {
 			removeEventMarkers();
 			events.getData().forEach((id, event) -> {
 				School host = event.getHost();
-				markerOptions.position(new LatLong(host.getLat(), host.getLon()));
-				markerOptions.title(host.getName());
-
+				if (host != null) {
+					markerOptions.position(new LatLong(host.getLat(), host.getLon()));
+					markerOptions.title(host.getName());
+				} else {
+					markerOptions.position(new LatLong(0.0, 0.0));
+				}
 				EventMarker marker = new EventMarker(event.getId(), markerOptions);
+				marker.setVisible(host != null);
+				
 				map.addMarker(marker);
 				map.addUIEventHandler(marker, UIEventType.click, (m) -> {
 					Event eventToSelect = tournament.getEvents().getByKey(marker.getEventId());
@@ -325,8 +330,15 @@ public class App extends Application {
 					.replace("(", "").replace(")", ""));
 
 			removeSchoolMarkers();
+			
 			event.getAttendingSchools().forEach((school) -> {
-				if (school.getId() != event.getHost().getId()) {
+				int hostId = -1;
+				
+				if(event.getHost() != null) {
+					hostId = event.getHost().getId();
+				}
+				
+				if (school.getId() != hostId) {
 					markerOptions.position(new LatLong(school.getLat(), school.getLon()));
 					markerOptions.title(school.getName());
 					Marker marker = new Marker(markerOptions);

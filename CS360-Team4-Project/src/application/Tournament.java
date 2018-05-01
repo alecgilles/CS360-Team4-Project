@@ -128,7 +128,7 @@ public class Tournament extends Observable {
 		events.getSectionals().getData().forEach((id, event) -> {
 				SchoolTable secSchools = ((Sectional) event).getSchools();
 				if (secSchools.getData().containsKey(school.getId())) {
-					if (event.getHost().equals(school)) {
+					if (event.getHost() != null && event.getHost().equals(school)) {
 						int response = JOptionPane.showConfirmDialog(null, "This school is the host of it's current"
 								+ " sectional. If this school changes sectionals, the current sectional will no"
 								+ " longer have a host. Do you really want to move this school to a new sectional?",

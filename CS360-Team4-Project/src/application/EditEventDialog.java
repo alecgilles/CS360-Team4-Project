@@ -42,7 +42,7 @@ public class EditEventDialog extends Dialog<Boolean> {
 			if (dialogButton == ButtonType.OK) {
 				School newHost = selectedSchool.get();
 
-				if (event != null && newHost != null && event.getHost().getId() != newHost.getId()) {
+				if (event != null && newHost != null) {
 					tournament.changeEventHost(event, newHost);
 				}
 				return true;

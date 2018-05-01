@@ -64,9 +64,13 @@ public class EventCell extends ListCell<Event> {
 
 		public void setEvent(Event event) {
 			this.event = event;
-			hostSchoolName.setText(event.getHost().getName() + ": Average Distance: "
-					+ tournament.getDriveTimes().calculateAverageEventDriveTime(event) + " - Max Distance: "
-					+ tournament.getDriveTimes().calculateMaxEventDriveTime(event));
+			if (event.getHost() != null) {
+				hostSchoolName.setText(event.getHost().getName() + ": Average Distance: "
+						+ tournament.getDriveTimes().calculateAverageEventDriveTime(event) + " - Max Distance: "
+						+ tournament.getDriveTimes().calculateMaxEventDriveTime(event));
+			} else {
+				hostSchoolName.setText("No Host");
+			}
 			attendingSchools.setText(event.getAttendingSchoolsAsString());
 		}
 

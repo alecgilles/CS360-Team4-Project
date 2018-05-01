@@ -62,7 +62,7 @@ public abstract class Event {
 
 	@Override
 	public String toString() {
-		return host.getName();
+		return (host != null ? host.getName() : "Unhosted Event");
 	}
 
 	public String getAttendingSchoolsAsString() {

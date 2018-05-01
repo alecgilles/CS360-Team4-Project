@@ -104,9 +104,11 @@ public class TimeTable extends Observable {
 			ArrayList<School> schools = cursor.getValue().getAttendingSchools();
 			School host = cursor.getValue().getHost();
 
-			for (int j = 0; j < schools.size(); j++) {
-				sum += data[host.getId() - 1][schools.get(j).getId() - 1];
-				count++;
+			if(host != null) {
+				for (int j = 0; j < schools.size(); j++) {
+					sum += data[host.getId() - 1][schools.get(j).getId() - 1];
+					count++;
+				}
 			}
 		}
 
@@ -143,10 +145,12 @@ public class TimeTable extends Observable {
 			ArrayList<School> schools = cursor.getValue().getAttendingSchools();
 			School host = cursor.getValue().getHost();
 
-			for (int j = 0; j < schools.size(); j++) {
-				current = data[host.getId() - 1][schools.get(j).getId() - 1];
-				if (current > max) {
-					max = current;
+			if(host != null) {
+				for (int j = 0; j < schools.size(); j++) {
+					current = data[host.getId() - 1][schools.get(j).getId() - 1];
+					if (current > max) {
+						max = current;
+					}
 				}
 			}
 		}
